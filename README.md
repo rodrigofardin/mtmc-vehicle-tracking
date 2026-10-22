@@ -8,31 +8,15 @@ Built and measured on **CityFlowV2** (AI City Challenge 2022, Track 1).
 🇬🇧 **English** · 🇧🇷 [Português (Brasil)](README.pt-BR.md)
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
-[![Last commit](https://img.shields.io/github/last-commit/rodrigofardin/mtmc-vehicle-tracking)](https://github.com/rodrigofardin/mtmc-vehicle-tracking/commits/main)
-[![Stars](https://img.shields.io/github/stars/rodrigofardin/mtmc-vehicle-tracking?style=flat)](https://github.com/rodrigofardin/mtmc-vehicle-tracking/stargazers)
-[![Dataset](https://img.shields.io/badge/Dataset-CityFlowV2_(AIC22)-orange)](https://www.aicitychallenge.org/)
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.7-EE4C2C?logo=pytorch&logoColor=white)
 ![TensorRT](https://img.shields.io/badge/TensorRT-10-76B900?logo=nvidia&logoColor=white)
-![CUDA](https://img.shields.io/badge/CUDA-12.6-76B900?logo=nvidia&logoColor=white)
-![ONNX Runtime](https://img.shields.io/badge/ONNX_Runtime-GPU-005CED?logo=onnx&logoColor=white)
-![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?logo=opencv&logoColor=white)
 ![Ultralytics](https://img.shields.io/badge/Ultralytics-YOLO-111F68)
-![Transformers](https://img.shields.io/badge/Transformers-FFD21E?logo=huggingface&logoColor=black)
-![NumPy](https://img.shields.io/badge/NumPy-013243?logo=numpy&logoColor=white)
-![SciPy](https://img.shields.io/badge/SciPy-8CAAE6?logo=scipy&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
-![nginx](https://img.shields.io/badge/nginx-009639?logo=nginx&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
-![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000000?logo=shadcnui&logoColor=white)
-![pytest](https://img.shields.io/badge/pytest-0A9EDC?logo=pytest&logoColor=white)
-![Vitest](https://img.shields.io/badge/Vitest-6E9F18?logo=vitest&logoColor=white)
-![Playwright](https://img.shields.io/badge/Playwright-2EAD33?logo=playwright&logoColor=white)
 
 <img src="docs/img/architecture.svg" alt="MTMC architecture" width="100%">
 
