@@ -5,27 +5,28 @@
 /* Tema escuro operacional (tokens shadcn, base zinc) */
 :root {
   color-scheme: dark;
-  --background: oklch(0.145 0.005 285);
-  --foreground: oklch(0.96 0 0);
-  --card: oklch(0.19 0.006 285);
-  --card-foreground: oklch(0.96 0 0);
-  --popover: oklch(0.19 0.006 285);
-  --popover-foreground: oklch(0.96 0 0);
-  --primary: oklch(0.78 0.14 215);
-  --primary-foreground: oklch(0.15 0.02 250);
-  --secondary: oklch(0.26 0.006 285);
-  --secondary-foreground: oklch(0.96 0 0);
-  --muted: oklch(0.24 0.006 285);
-  --muted-foreground: oklch(0.7 0.01 285);
-  --accent: oklch(0.28 0.01 285);
-  --accent-foreground: oklch(0.96 0 0);
-  --destructive: oklch(0.65 0.21 25);
-  --border: oklch(0.3 0.008 285);
-  --input: oklch(0.3 0.008 285);
-  --ring: oklch(0.78 0.14 215);
-  --ok: oklch(0.75 0.17 150);
-  --warn: oklch(0.8 0.16 80);
-  --radius: 0.5rem;
+  /* Preto / grafite / cinza; ciano = ação e seleção; verde-amarelo-vermelho = saúde */
+  --background: oklch(0.125 0.004 255);
+  --foreground: oklch(0.955 0.003 255);
+  --card: oklch(0.165 0.005 255);
+  --card-foreground: oklch(0.955 0.003 255);
+  --popover: oklch(0.185 0.006 255);
+  --popover-foreground: oklch(0.955 0.003 255);
+  --primary: oklch(0.8 0.125 205);
+  --primary-foreground: oklch(0.15 0.03 230);
+  --secondary: oklch(0.235 0.006 255);
+  --secondary-foreground: oklch(0.955 0.003 255);
+  --muted: oklch(0.215 0.006 255);
+  --muted-foreground: oklch(0.69 0.01 255);
+  --accent: oklch(0.265 0.01 255);
+  --accent-foreground: oklch(0.955 0.003 255);
+  --destructive: oklch(0.64 0.22 25);
+  --border: oklch(0.275 0.007 255);
+  --input: oklch(0.3 0.008 255);
+  --ring: oklch(0.8 0.125 205);
+  --ok: oklch(0.76 0.17 152);
+  --warn: oklch(0.82 0.15 85);
+  --radius: 0.4rem;
 }
 
 @theme inline {
@@ -68,4 +69,26 @@
     @apply bg-background text-foreground antialiased;
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   }
+}
+
+@layer base {
+  /* foco visível e consistente para navegação por teclado */
+  :where(button, a, input, select, textarea, [role="separator"], [tabindex]):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 1px;
+  }
+  /* rolagem discreta */
+  * { scrollbar-width: thin; scrollbar-color: oklch(0.34 0.008 255) transparent; }
+  *::-webkit-scrollbar { width: 8px; height: 8px; }
+  *::-webkit-scrollbar-thumb { background: oklch(0.34 0.008 255); border-radius: 8px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  body { font-size: 14px; font-feature-settings: "tnum" 1, "cv11" 1; }
+  /* durante o redimensionamento de barras: sem seleção de texto e cursor consistente */
+  body.is-resizing { user-select: none; cursor: col-resize; }
+  body.is-resizing * { cursor: col-resize !important; }
+}
+
+/* sem animações para quem pede menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }

@@ -122,6 +122,11 @@ dos frames é descartado para acompanhar o tempo real), rodada de associação �
 5,6 s. A inferência de GPU é serializada por um lock (várias threads inicializando engines TensorRT juntas causavam
 `CUDA error ... during capture`). A qualidade ao vivo não foi medida contra GT.
 
+## Interface (modernização)
+O monitor web foi modernizado: drag-and-drop para trocar câmeras de posição (ordem persistida, sem remontar streams), barras laterais recolhíveis e
+redimensionáveis, grid que maximiza a área de vídeo, controles por câmera no hover, barra de métricas e atalhos de teclado. Detalhes, persistência e limitações em
+[frontend/README.md](frontend/README.md).
+
 ## Associação global
 Para cada par de tracklets de câmeras diferentes: relação temporal (simultâneo/transição), compatibilidade de classe e cues
 decisivos — **aparência** (cosseno do Re-ID) e **espacial** (homografia p/ plano em metros, ou zonas/transições configuradas).

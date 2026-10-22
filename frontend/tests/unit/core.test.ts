@@ -75,7 +75,7 @@ describe('drawOverlay', () => {
     t.update(hdr(0, [det(1, 100)]))
     t.update(hdr(1, [det(1, 120)]))
     const { ctx, calls } = mkCtx()
-    drawOverlay(ctx, hdr(1, [det(1, 120)]), t, { boxes: true, labels: true, trails: true }, 500)
+    drawOverlay(ctx, hdr(1, [det(1, 120)]), t, { boxes: true, ids: true, labels: true, trails: true }, 500)
     // bbox [120,50,160,90] no vídeo de 1000 px, canvas de 500 px (k = 0,5) => x=60, y=25, 20x20
     expect(calls).toContain('strokeRect:60,25,20,20')
     expect(calls.some((c) => c.startsWith('fillText:#1 car 87%'))).toBe(true)
@@ -86,7 +86,7 @@ describe('drawOverlay', () => {
     t.update(hdr(0, [det(1)]))
     t.update(hdr(1, [det(1, 120)]))
     const { ctx, calls } = mkCtx()
-    drawOverlay(ctx, hdr(1, [det(1, 120)]), t, { boxes: false, labels: false, trails: false }, 1000)
+    drawOverlay(ctx, hdr(1, [det(1, 120)]), t, { boxes: false, ids: false, labels: false, trails: false }, 1000)
     expect(calls.filter((c) => /strokeRect|fillText|lineTo/.test(c))).toHaveLength(0)
   })
   it('rótulo traz ID do tracker, classe, confiança e ID global quando existe', () => {

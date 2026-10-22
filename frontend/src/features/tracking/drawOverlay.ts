@@ -3,7 +3,8 @@ import type { TrailStore } from './trails'
 
 export interface OverlayOptions {
   boxes: boolean
-  labels: boolean
+  ids: boolean // ID do tracker (#12) e ID global (G0004), quando existir
+  labels: boolean // classe + confiança
   trails: boolean
 }
 
@@ -14,10 +15,12 @@ export function colorFor(key: string | number): string {
   return `hsl(${(h * 137.508) % 360}, 85%, 60%)`
 }
 
-export function labelFor(d: FrameHeader['detections'][number]): string {
-  const parts = [`#${d.id}`, d.name, `${Math.round(d.conf * 100)}%`]
-  if (d.gid) parts.push(d.gid)
-  if (d.uncertain) parts.push('?')
+export function labelFor(d: FrameHeader['detections'][number], o: Pick<OverlayOptions, 'ids' | 'labels'> = { ids: true, labels: true }): string {
+  const parts: string[] = []
+  if (o.ids) parts.push(`#${d.id}`)
+  if (o.labels) parts.push(d.name, `${Math.round(d.conf * 100)}%`)
+  if (o.ids && d.gid) parts.push(d.gid)
+  if (parts.length && d.uncertain) parts.push('?')
   return parts.join(' ')
 }
 
@@ -60,8 +63,8 @@ export function drawOverlay(
       ctx.strokeRect(x1, y1, x2 - x1, y2 - y1)
       ctx.setLineDash([])
     }
-    if (opts.labels) {
-      const text = labelFor(d)
+    const text = opts.labels || opts.ids ? labelFor(d, opts) : ''
+    if (text) {
       const tw = ctx.measureText(text).width + 6
       const th = fs + 4
       const ty = y1 - th < 0 ? y1 : y1 - th

@@ -26,13 +26,16 @@ export function useCameraStream(
   active: boolean,
   canvasRef: RefObject<HTMLCanvasElement | null>,
   overlay: OverlayOptions,
+  opts: { paint?: boolean } = {},
   manager: StreamManager = streamManager,
 ): StreamInfo {
   const [info, setInfo] = useState<StreamInfo>(EMPTY)
   const overlayRef = useRef(overlay)
+  const paintOn = useRef(opts.paint !== false)
   useEffect(() => {
     overlayRef.current = overlay
-  }, [overlay])
+    paintOn.current = opts.paint !== false // tile oculto (maximizado/outro layout): a conexão continua, só não decodifica nem desenha
+  }, [overlay, opts.paint])
 
   useEffect(() => {
     if (!active) return
@@ -94,6 +97,7 @@ export function useCameraStream(
         inferenceMs: h.inference_ms,
         frame: h.frame,
       }
+      if (!paintOn.current) return
       if (decoding) pending = pkt
       else void paint(pkt)
     })

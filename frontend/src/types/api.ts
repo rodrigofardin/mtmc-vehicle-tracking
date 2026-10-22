@@ -34,6 +34,7 @@ export interface Health {
   cameras: number
   ws_clients: number
   notes: string[]
+  association?: { status?: string; linked_identities?: number; last_run_ms?: number; [k: string]: unknown }
 }
 
 /** Detecção local: `id` é o ID do ByteTrack (por câmera), NÃO uma identidade global MTMC. bbox em pixels do vídeo original. */

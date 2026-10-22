@@ -159,6 +159,8 @@ describe('ProcessingPanel (somente leitura)', () => {
 
 describe('integração na página', () => {
   beforeEach(() => {
+    localStorage.clear()
+    sessionStorage.clear()
     apiMock.cameras.mockResolvedValue([
       { id: 'c001', state: 'running', error: null, width: 1920, height: 1080, fps: 10, offset_s: 0, frames_total: 10, frame: 1, loop: 0, processing_fps: 8, inference_ms: 20, frames_published: 1, frames_dropped: 0, mode: 'live' },
     ])
@@ -179,7 +181,8 @@ describe('integração na página', () => {
     expect(screen.getByTestId('panel-c001')).toBeInTheDocument() // grade continua visível
     expect(screen.getByTestId('open-processing')).toHaveAttribute('aria-pressed', 'true')
     await u.click(screen.getByRole('button', { name: 'Fechar painel' }))
-    expect(screen.queryByTestId('processing-panel')).not.toBeInTheDocument()
+    // o painel continua montado (preserva aba e filtros), apenas oculto
+    expect(screen.getByTestId('processing-panel')).toHaveAttribute('data-open', 'false')
     expect(screen.getByTestId('panel-c001')).toBeInTheDocument()
   })
 })

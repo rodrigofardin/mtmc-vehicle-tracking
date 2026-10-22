@@ -3,7 +3,7 @@ import { MonitoringPage } from '@/features/monitoring/MonitoringPage'
 
 export default function App() {
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={350}>
       <MonitoringPage />
     </TooltipProvider>
   )

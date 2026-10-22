@@ -30,6 +30,18 @@ src/
 tests/unit (Vitest) · tests/e2e (Playwright, contra o stack real)
 ```
 
+## Interface moderna: recursos e decisões
+* **Tema e layout**: preto/grafite/cinza, ciano para ação e seleção, verde/amarelo/vermelho para saúde; vídeo em toda a área do tile; controles sobrepostos só no
+  hover/foco (e sempre visíveis em telas de toque). Sem transições sobre o vídeo; `prefers-reduced-motion` respeitado.
+* **Drag-and-drop**: `@dnd-kit/core` 6.x (estável; a API nova `@dnd-kit/react` ainda é 0.x). Semântica de **troca** entre duas câmeras; ordem persistida em
+  `localStorage` (`mtmc.ui.v1.order`) e mesclada com as câmeras descobertas (novas no fim). O item arrastado é o próprio painel (nenhum clone com canvas).
+  Teclado: o `KeyboardSensor` do dnd-kit está ativo na alça (Espaço + setas), mas **não foi validado** em navegador (só o mouse foi testado de ponta a ponta).
+* **Painéis ocultos**: tiles fora do layout ou fora da maximização continuam montados (até 16) com a conexão mantida e sem decodificar/desenhar; acima de 16, os
+  excedentes são desmontados e reabrem a conexão quando voltam.
+* **Persistência**: `mtmc.ui.v1` no `localStorage` com validação/sanitização (dados corrompidos caem nos padrões). Seleção de câmeras continua por sessão.
+* **Dependências novas**: `@dnd-kit/core` (arraste e soltura acessível e com sensores configuráveis) e os componentes shadcn `alert-dialog` e `popover`
+  (confirmação e ajuda). Removida a dependência órfã `cn` (a CLI do shadcn a adicionou por engano).
+
 ## Painel "Modelos e limiares" (somente leitura)
 Botão no cabeçalho → painel lateral recolhível (as câmeras continuam visíveis). Abas: Visão geral, Modelos, Limiares e parâmetros,
 Por câmera, Histórico. Consulta `GET /api/runtime` apenas com o painel aberto (a cada 5 s), sem tocar nos streams ou na inferência.
@@ -94,9 +106,9 @@ docker compose stop frontend
 | `MTMC_CONFIG`, `MTMC_MODE` | mtmc-api | `configs/s01_gpu.yaml`, `live` | config do backend; `live` (YOLO+ByteTrack) ou `replay` (resultados salvos, sem GPU) |
 
 ## Testes realizados
-* Vitest: 50 testes (41 do monitor + 9 do painel de modelos e limiares) (layouts, trilhas, desenho de caixas/rótulos/trilhas, protocolo, reconexão e timeout do stream, contagem de
+* Vitest: 70 testes (41 do monitor, 9 do painel de modelos e limiares, 20 da interface: ordem, grid, preferências, atalhos, divisores, sidebar, overlays) (layouts, trilhas, desenho de caixas/rótulos/trilhas, protocolo, reconexão e timeout do stream, contagem de
   referências, erros da API, grid com 1–12 câmeras, seleção/busca, layout, ampliar, estados de erro/reconexão, metadados).
-* Playwright (Edge, contra o backend real com GPU): 9 testes (6 do monitor + 3 do painel: dados reais, consulta sem interromper streams, erro de API) (descoberta de câmeras, canvas com pixels, seleção, layouts,
+* Playwright (Edge, contra o backend real com GPU): 21 testes (6 do monitor, 3 do painel e 12 da interface: arrastar com mouse real, sem remontar/reabrir streams, persistência após recarregar, barras, atalhos, console sem erros, 4 resoluções incluindo 3440×1440 e 390×844) (descoberta de câmeras, canvas com pixels, seleção, layouts,
   ampliar, sem WebSockets novos ao trocar layout, API fora do ar, HTTP 500).
 * Verificação manual no navegador: grid ao vivo, ampliar, queda e retorno do backend (reconecta sozinho).
 

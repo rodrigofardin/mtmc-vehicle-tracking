@@ -4,7 +4,8 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => sessionStorage.clear())
 })
 
-const panels = (page: Page) => page.locator('[data-testid^="panel-"]')
+// painéis EXIBIDOS (tiles ocultos por layout/maximização continuam montados, mas não visíveis)
+const panels = (page: Page) => page.locator('[data-testid^="panel-"]:visible')
 
 const live = (page: Page) => page.locator('[data-testid^="panel-"] [data-health="live"]')
 
@@ -39,6 +40,7 @@ test('seleção e layout adaptam o grid', async ({ page }) => {
   const total = Number(await page.getByTestId('count-total').innerText())
 
   await page.getByRole('button', { name: 'Limpar' }).click()
+  await page.getByTestId('confirm-clear').click()
   await expect(page.getByText('Nenhuma câmera selecionada')).toBeVisible()
   await expect(panels(page)).toHaveCount(0)
 
@@ -59,7 +61,7 @@ test('ampliar uma câmera e voltar', async ({ page }) => {
   await page.goto('/')
   await waitLive(page)
   const n = await panels(page).count()
-  await page.getByRole('button', { name: /^Ampliar / }).first().click()
+  await page.getByRole('button', { name: /^Maximizar / }).first().click()
   await expect(panels(page)).toHaveCount(1)
   await page.keyboard.press('Escape')
   await expect(panels(page)).toHaveCount(n)

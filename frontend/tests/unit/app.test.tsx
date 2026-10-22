@@ -56,6 +56,7 @@ function packet(camId: string, dets: FramePacket['header']['detections'], frame 
 
 beforeEach(() => {
   sessionStorage.clear()
+  localStorage.clear()
   hub.streams.clear()
   hub.acquired.length = 0
   apiMock.cameras.mockReset()
@@ -101,6 +102,9 @@ describe('App', () => {
     expect(screen.getByTestId('count-selected')).toHaveTextContent('3')
 
     await u.click(screen.getByRole('button', { name: 'Limpar' }))
+    // com mais de uma câmera selecionada, limpar pede confirmação (e nada some antes de confirmar)
+    expect(screen.getAllByTestId(/^panel-/)).toHaveLength(3)
+    await u.click(screen.getByTestId('confirm-clear'))
     expect(screen.getByText('Nenhuma câmera selecionada')).toBeInTheDocument()
 
     await u.click(screen.getByRole('button', { name: 'Selecionar todas' }))
@@ -118,11 +122,12 @@ describe('App', () => {
     render(<App />)
     await waitFor(() => expect(screen.getAllByTestId(/^panel-/)).toHaveLength(6))
     await u.click(screen.getByTestId('layout-4'))
-    expect(screen.getAllByTestId(/^panel-/)).toHaveLength(4)
+    // o layout limita o que é EXIBIDO; os demais painéis seguem montados (ocultos) para não reiniciar streams
+    expect(screen.getByTestId('video-grid')).toHaveAttribute('data-count', '4')
     expect(screen.getByRole('note')).toHaveTextContent('Exibindo 4 de 6')
     expect(screen.getByTestId('video-grid')).toHaveAttribute('data-cols', '2')
     await u.click(screen.getByTestId('layout-1'))
-    expect(screen.getAllByTestId(/^panel-/)).toHaveLength(1)
+    expect(screen.getByTestId('video-grid')).toHaveAttribute('data-count', '1')
     await u.click(screen.getByTestId('layout-auto'))
     await u.click(within(screen.getByTestId('panel-c001')).getByRole('button', { name: /Remover c001/ }))
     expect(screen.queryByTestId('panel-c001')).not.toBeInTheDocument()
@@ -133,10 +138,15 @@ describe('App', () => {
     apiMock.cameras.mockResolvedValue(mkCams(3))
     render(<App />)
     await waitFor(() => expect(screen.getAllByTestId(/^panel-/)).toHaveLength(3))
-    await u.click(within(screen.getByTestId('panel-c002')).getByRole('button', { name: /Ampliar c002/ }))
-    expect(screen.getAllByTestId(/^panel-/)).toHaveLength(1)
-    await u.keyboard('{Escape}')
+    await u.click(within(screen.getByTestId('panel-c002')).getByRole('button', { name: /Maximizar c002/ }))
+    // maximizar só muda a visualização: os outros painéis continuam montados (conexão mantida), apenas ocultos
+    expect(screen.getByTestId('video-grid')).toHaveAttribute('data-count', '1')
     expect(screen.getAllByTestId(/^panel-/)).toHaveLength(3)
+    expect(screen.getByTestId('tile-c001')).toHaveClass('hidden')
+    expect(screen.getByTestId('tile-c002')).not.toHaveClass('hidden')
+    await u.keyboard('{Escape}')
+    expect(screen.getByTestId('video-grid')).toHaveAttribute('data-count', '3')
+    expect(screen.getByTestId('tile-c001')).not.toHaveClass('hidden')
   })
 
   it('não reabre conexão ao mudar de layout (uma aquisição por câmera montada)', async () => {

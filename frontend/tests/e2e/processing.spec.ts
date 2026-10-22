@@ -9,7 +9,7 @@ const live = (page: Page) => page.locator('[data-testid^="panel-"] [data-health=
 test('abre o painel com dados reais do backend, sem derrubar as câmeras', async ({ page }) => {
   await page.goto('/')
   await expect(live(page).first()).toBeVisible({ timeout: 45_000 })
-  const before = await page.locator('[data-testid^="panel-"]').count()
+  const before = await page.locator('[data-testid^="panel-"]:visible').count()
 
   await page.getByTestId('open-processing').click()
   const panel = page.getByTestId('processing-panel')
@@ -17,7 +17,7 @@ test('abre o painel com dados reais do backend, sem derrubar as câmeras', async
   await expect(panel.getByTestId('tab-overview')).toContainText('Revisão')
   await expect(panel.getByText('somente leitura').first()).toBeVisible()
   // câmeras continuam visíveis e ao vivo ao lado do painel
-  await expect(page.locator('[data-testid^="panel-"]')).toHaveCount(before)
+  await expect(page.locator('[data-testid^="panel-"]:visible')).toHaveCount(before)
   await expect(live(page).first()).toBeVisible()
 
   // Modelos: backend real em modo ao vivo expõe o detector com formato vindo do runtime
