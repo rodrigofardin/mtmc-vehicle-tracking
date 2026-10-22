@@ -27,3 +27,9 @@ models/*
 *.pth
 *.log
 outputs_detect.log
+
+# treino de Re-ID: recortes, checkpoints e logs não são versionados
+reid_training/data/
+reid_training/runs/*.pt
+reid_training/runs/**/*.pt
+reid_training/runs/*.log

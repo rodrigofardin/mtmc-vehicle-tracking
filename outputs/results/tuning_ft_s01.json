@@ -1,0 +1,314 @@
+[
+  {
+    "params": {
+      "association.appearance_threshold": 0.2,
+      "association.accept_score": 0.5,
+      "spatial.max_ground_dist": 150.0
+    },
+    "IDF1": 0.6525575946895744,
+    "IDP": 0.592722199891235,
+    "IDR": 0.7258302689868836,
+    "pair_precision": 0.9251336898395722,
+    "pair_recall": 0.5598705501618123,
+    "linked": 115
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.25,
+      "association.accept_score": 0.5,
+      "spatial.max_ground_dist": 150.0
+    },
+    "IDF1": 0.6521891965785259,
+    "IDP": 0.5925198713096139,
+    "IDR": 0.7252222254393839,
+    "pair_precision": 0.9247311827956989,
+    "pair_recall": 0.5566343042071198,
+    "linked": 115
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.2,
+      "association.accept_score": 0.3,
+      "spatial.max_ground_dist": 150.0
+    },
+    "IDF1": 0.6510746055450944,
+    "IDP": 0.5902797400395592,
+    "IDR": 0.7258302689868836,
+    "pair_precision": 0.9153439153439153,
+    "pair_recall": 0.5598705501618123,
+    "linked": 112
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.3,
+      "association.accept_score": 0.5,
+      "spatial.max_ground_dist": 150.0
+    },
+    "IDF1": 0.6506769724902404,
+    "IDP": 0.5925238978456271,
+    "IDR": 0.7214871007904566,
+    "pair_precision": 0.9281767955801105,
+    "pair_recall": 0.5436893203883495,
+    "linked": 115
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.25,
+      "association.accept_score": 0.3,
+      "spatial.max_ground_dist": 150.0
+    },
+    "IDF1": 0.6493822999442579,
+    "IDP": 0.5879025443620317,
+    "IDR": 0.7252222254393839,
+    "pair_precision": 0.9148936170212766,
+    "pair_recall": 0.5566343042071198,
+    "linked": 115
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.3,
+      "association.accept_score": 0.3,
+      "spatial.max_ground_dist": 150.0
+    },
+    "IDF1": 0.6469145415612225,
+    "IDP": 0.5861987863963498,
+    "IDR": 0.7216608275183137,
+    "pair_precision": 0.9180327868852459,
+    "pair_recall": 0.5436893203883495,
+    "linked": 116
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.2,
+      "association.accept_score": 0.5,
+      "spatial.max_ground_dist": 80.0
+    },
+    "IDF1": 0.6429387583562075,
+    "IDP": 0.588332852610326,
+    "IDR": 0.7087181862929611,
+    "pair_precision": 0.9244186046511628,
+    "pair_recall": 0.5145631067961165,
+    "linked": 122
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.25,
+      "association.accept_score": 0.5,
+      "spatial.max_ground_dist": 80.0
+    },
+    "IDF1": 0.6428411882957338,
+    "IDP": 0.5884489560280959,
+    "IDR": 0.7083128239279614,
+    "pair_precision": 0.9244186046511628,
+    "pair_recall": 0.5145631067961165,
+    "linked": 122
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.3,
+      "association.accept_score": 0.5,
+      "spatial.max_ground_dist": 80.0
+    },
+    "IDF1": 0.6417880977767247,
+    "IDP": 0.5883857887623093,
+    "IDR": 0.7058516952833194,
+    "pair_precision": 0.9230769230769231,
+    "pair_recall": 0.5048543689320388,
+    "linked": 122
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.25,
+      "association.accept_score": 0.3,
+      "spatial.max_ground_dist": 80.0
+    },
+    "IDF1": 0.64037941441618,
+    "IDP": 0.5834722156087805,
+    "IDR": 0.7095868199322466,
+    "pair_precision": 0.9075144508670521,
+    "pair_recall": 0.5080906148867314,
+    "linked": 124
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.2,
+      "association.accept_score": 0.3,
+      "spatial.max_ground_dist": 80.0
+    },
+    "IDF1": 0.6384263899917987,
+    "IDP": 0.5799668874172186,
+    "IDR": 0.7099921822972465,
+    "pair_precision": 0.9075144508670521,
+    "pair_recall": 0.5080906148867314,
+    "linked": 123
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.2,
+      "association.accept_score": 0.5,
+      "spatial.max_ground_dist": 40.0
+    },
+    "IDF1": 0.6341770625360115,
+    "IDP": 0.5902424423825202,
+    "IDR": 0.6851782146683267,
+    "pair_precision": 0.937888198757764,
+    "pair_recall": 0.4886731391585761,
+    "linked": 122
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.25,
+      "association.accept_score": 0.5,
+      "spatial.max_ground_dist": 40.0
+    },
+    "IDF1": 0.6341770625360115,
+    "IDP": 0.5902424423825202,
+    "IDR": 0.6851782146683267,
+    "pair_precision": 0.937888198757764,
+    "pair_recall": 0.4886731391585761,
+    "linked": 122
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.3,
+      "association.accept_score": 0.5,
+      "spatial.max_ground_dist": 40.0
+    },
+    "IDF1": 0.6330867644887165,
+    "IDP": 0.5901832198638366,
+    "IDR": 0.6827170860236847,
+    "pair_precision": 0.9367088607594937,
+    "pair_recall": 0.47896440129449835,
+    "linked": 122
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.3,
+      "association.accept_score": 0.3,
+      "spatial.max_ground_dist": 80.0
+    },
+    "IDF1": 0.6315298749061148,
+    "IDP": 0.5712545390652454,
+    "IDR": 0.7060254220111765,
+    "pair_precision": 0.9107142857142857,
+    "pair_recall": 0.49514563106796117,
+    "linked": 126
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.35,
+      "association.accept_score": 0.5,
+      "spatial.max_ground_dist": 150.0
+    },
+    "IDF1": 0.6301217280611027,
+    "IDP": 0.5812559630109841,
+    "IDR": 0.68795784231404,
+    "pair_precision": 0.936046511627907,
+    "pair_recall": 0.5210355987055016,
+    "linked": 116
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.25,
+      "association.accept_score": 0.3,
+      "spatial.max_ground_dist": 40.0
+    },
+    "IDF1": 0.6282890378653383,
+    "IDP": 0.5791504848440439,
+    "IDR": 0.6865390740365406,
+    "pair_precision": 0.9090909090909091,
+    "pair_recall": 0.4854368932038835,
+    "linked": 125
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.3,
+      "association.accept_score": 0.3,
+      "spatial.max_ground_dist": 40.0
+    },
+    "IDF1": 0.6262620908970452,
+    "IDP": 0.5773336916424401,
+    "IDR": 0.6842516721197556,
+    "pair_precision": 0.9074074074074074,
+    "pair_recall": 0.47572815533980584,
+    "linked": 126
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.35,
+      "association.accept_score": 0.3,
+      "spatial.max_ground_dist": 150.0
+    },
+    "IDF1": 0.6254128235154801,
+    "IDP": 0.5731719081612966,
+    "IDR": 0.6881315690418971,
+    "pair_precision": 0.9147727272727273,
+    "pair_recall": 0.5210355987055016,
+    "linked": 118
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.2,
+      "association.accept_score": 0.3,
+      "spatial.max_ground_dist": 40.0
+    },
+    "IDF1": 0.624693441628649,
+    "IDP": 0.5735141024089093,
+    "IDR": 0.6859020760343979,
+    "pair_precision": 0.9096385542168675,
+    "pair_recall": 0.4886731391585761,
+    "linked": 123
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.35,
+      "association.accept_score": 0.5,
+      "spatial.max_ground_dist": 80.0
+    },
+    "IDF1": 0.6222803948018645,
+    "IDP": 0.5775485918286394,
+    "IDR": 0.6745229753597591,
+    "pair_precision": 0.9320987654320988,
+    "pair_recall": 0.4886731391585761,
+    "linked": 123
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.35,
+      "association.accept_score": 0.5,
+      "spatial.max_ground_dist": 40.0
+    },
+    "IDF1": 0.6130557410107231,
+    "IDP": 0.5789839407041384,
+    "IDR": 0.6513883661001245,
+    "pair_precision": 0.934640522875817,
+    "pair_recall": 0.4627831715210356,
+    "linked": 122
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.35,
+      "association.accept_score": 0.3,
+      "spatial.max_ground_dist": 80.0
+    },
+    "IDF1": 0.611898165776033,
+    "IDP": 0.5597943592946716,
+    "IDR": 0.6746967020876162,
+    "pair_precision": 0.9079754601226994,
+    "pair_recall": 0.47896440129449835,
+    "linked": 127
+  },
+  {
+    "params": {
+      "association.appearance_threshold": 0.35,
+      "association.accept_score": 0.3,
+      "spatial.max_ground_dist": 40.0
+    },
+    "IDF1": 0.6063947078280044,
+    "IDP": 0.566056680974973,
+    "IDR": 0.6529229521961953,
+    "pair_precision": 0.9044585987261147,
+    "pair_recall": 0.459546925566343,
+    "linked": 126
+  }
+]

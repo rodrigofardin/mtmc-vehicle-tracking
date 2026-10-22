@@ -14,3 +14,4 @@ fastapi
 uvicorn[standard]
 httpx
 onnxruntime-gpu==1.22.0
+onnx2torch

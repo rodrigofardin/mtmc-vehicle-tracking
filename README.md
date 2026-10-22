@@ -2,7 +2,7 @@
 
 Pipeline modular para rastrear veículos entre várias câmeras: alinhamento temporal de vídeos, detecção + ByteTrack por
 câmera, tracklets, **Re-ID de veículos**, associação global com evidências, avaliação contra ground truth, vídeos de
-diagnóstico e um **monitor web em tempo real**. Desenvolvido e medido no **CityFlowV2 (AI City 2022, Track 1)**.
+diagnóstico e um **monitor web em tempo real** com painel somente leitura de modelos e limiares (`GET /api/runtime`). Desenvolvido e medido no **CityFlowV2 (AI City 2022, Track 1)**.
 
 > **Estado honesto:** funciona de ponta a ponta (offline e ao vivo, em GPU com TensorRT), mas a qualidade da associação
 > global ainda é modesta: IDF1 global ≈ 0,61 no S01 (cenário onde os limiares foram ajustados) e ≈ 0,38 no S02 (cenário
@@ -20,6 +20,7 @@ vídeos ─► gerenciador/alinhamento temporal ─► detector (PyTorch | Tenso
   `reid_check`, `detector_bench*`, `visualize`.
 - `frontend/` — monitor web (React + TypeScript + Vite + Tailwind + shadcn/ui), serviço Docker independente
   ([frontend/README.md](frontend/README.md)).
+- `reid_training/` — ajuste fino do Re-ID com o GT do CityFlowV2 (S03/S04/S05 para treinar; S01/S02 reservados para avaliação): [reid_training/README.md](reid_training/README.md).
 - `configs/` — YAML (`s01_cityflow.yaml`, `s02_cityflow.yaml`, `live_trt_s01.yaml`, `exp_*.yaml`, `detector_bench.yaml`).
 - `tests/` — 74 testes do backend (sintéticos, sem depender dos vídeos). `outputs/results/` — resultados medidos (JSON).
 
@@ -62,6 +63,10 @@ própria (ROI + só IDs em ≥ 2 câmeras, IoU ≥ 0,5; **não** é o `eval.py` 
 Em 1197 recortes do GT (95 veículos, 5 câmeras do S01): entrada RGB; AUC 0,951; rank-1 0,687; mAP 0,513 (BGR: 0,924 / 0,594).
 Cosseno médio: mesmo veículo 0,42; veículos diferentes 0,10 (p90 0,24) ⇒ limiares de aparência ≈ 0,15. Treinado em VeRi
 (diferença de domínio).
+
+**Re-ID ajustado (`reid_training/`)**, avaliado em S01/S02 (fora do treino): rank-1 0,677 → 0,835 (S01) e 0,635 → 0,814 (S02); mAP 0,453 → 0,683 e
+0,504 → 0,723. No pipeline completo (YOLOv8n TRT, limiares escolhidos no S01): IDF1 0,613 → **0,652** (S01) e 0,383 → **0,424** (S02), IDR 0,650 → 0,725 e
+0,457 → 0,500. Detalhes e limitações em [reid_training/RESULTS.md](reid_training/RESULTS.md).
 
 ### Pipeline completo (detector YOLOv8n, limiares ajustados no S01)
 | Cenário | IDF1 | IDP | IDR | precisão/recall de pares |

@@ -1,0 +1,17 @@
+# Re-ID AJUSTADO (reid_training) com o detector YOLOv8n (TensorRT) no S01. Detecções reaproveitadas do experimento sem ajuste.
+extends: exp_s01_yolov8n.yaml
+reid:
+  model: "../models/osnet_ain_vehicle_reid_ft.onnx"
+  # cosseno do modelo ajustado (reid_training/runs/ft1/eval_onnx_ft.json): mesmo veículo ~0.55, diferentes ~0.13 (p90 ~0.28)
+association:
+  appearance_threshold: 0.25
+  appearance_scale: [0.3, 0.7]
+  accept_score: 0.5
+spatial:
+  max_ground_dist: 150.0   # escolhido no S01 (varredura em outputs/results/tuning_ft_s01.json)
+tuning:
+  grid:
+    association.appearance_threshold: [0.20, 0.25, 0.30, 0.35]
+    association.accept_score: [0.3, 0.5]
+    spatial.max_ground_dist: [40.0, 80.0, 150.0]
+output: {dir: "../outputs/exp/s01_yolov8n_ft"}

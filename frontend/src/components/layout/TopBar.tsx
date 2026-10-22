@@ -1,4 +1,5 @@
-import { Activity, Boxes, Route, Tag, Video, VideoOff } from 'lucide-react'
+import { Activity, Boxes, Route, SlidersHorizontal, Tag, Video, VideoOff } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Toggle } from '@/components/ui/toggle'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
@@ -19,6 +20,8 @@ interface Props {
   onLayout: (l: LayoutId) => void
   overlay: OverlayOptions
   onOverlay: (o: OverlayOptions) => void
+  panelOpen: boolean
+  onTogglePanel: () => void
 }
 
 const CONN = {
@@ -27,7 +30,7 @@ const CONN = {
   offline: { label: 'Backend indisponível', cls: 'text-destructive' },
 } as const
 
-export function TopBar({ environment, connection, health, total, selected, processing, layout, onLayout, overlay, onOverlay }: Props) {
+export function TopBar({ environment, connection, health, total, selected, processing, layout, onLayout, overlay, onOverlay, panelOpen, onTogglePanel }: Props) {
   const c = CONN[connection]
   return (
     <header className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b bg-card/60 px-4 py-2">
@@ -55,6 +58,15 @@ export function TopBar({ environment, connection, health, total, selected, proce
           <Toggle size="sm" variant="outline" pressed={overlay.labels} onPressedChange={(v) => onOverlay({ ...overlay, labels: v })} aria-label="Rótulos"><Tag className="size-4" /> Rótulos</Toggle>
           <Toggle size="sm" variant="outline" pressed={overlay.trails} onPressedChange={(v) => onOverlay({ ...overlay, trails: v })} aria-label="Trajetórias"><Route className="size-4" /> Trilhas</Toggle>
         </div>
+        <Button
+          size="sm"
+          variant={panelOpen ? 'secondary' : 'outline'}
+          onClick={onTogglePanel}
+          aria-pressed={panelOpen}
+          data-testid="open-processing"
+        >
+          <SlidersHorizontal className="size-4" aria-hidden /> Modelos e limiares
+        </Button>
         <ToggleGroup type="single" variant="outline" size="sm" value={layout} onValueChange={(v) => v && onLayout(v as LayoutId)} aria-label="Layout do grid">
           {LAYOUTS.map((l) => (
             <ToggleGroupItem key={l.id} value={l.id} aria-label={`Layout ${l.label}`} data-testid={`layout-${l.id}`}>

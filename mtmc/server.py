@@ -43,6 +43,12 @@ def create_app(cfg: dict, mode: str | None = None) -> FastAPI:
                 "ws_clients": clients["n"], "notes": registry.notes,
                 "association": {"status": svc.assoc_note, **(svc.assoc.stats if svc.assoc else {})}}
 
+    @app.get("/api/runtime")
+    def runtime():
+        """Modelos, parâmetros e estado de configuração em execução. SOMENTE LEITURA; não toca nos streams."""
+        from .runtime_info import build_runtime
+        return build_runtime(svc, cfg, svc.started)
+
     @app.get("/api/cameras")
     def cameras():
         return [w.status() for w in svc.workers.values()]

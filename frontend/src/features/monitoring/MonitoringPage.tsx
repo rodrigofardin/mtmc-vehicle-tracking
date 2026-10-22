@@ -3,6 +3,8 @@ import { VideoGrid } from '@/components/camera/VideoGrid'
 import { CameraSidebar } from '@/components/layout/CameraSidebar'
 import { TopBar } from '@/components/layout/TopBar'
 import { Button } from '@/components/ui/button'
+import { ProcessingPanel } from '@/features/processing/ProcessingPanel'
+import { useRuntime } from '@/hooks/useRuntime'
 import { useSelection } from '@/features/camera-selection/useSelection'
 import type { OverlayOptions } from '@/features/tracking/drawOverlay'
 import { useCameras } from '@/hooks/useCameras'
@@ -16,6 +18,8 @@ export function MonitoringPage() {
   const [layout, setLayout] = useState<LayoutId>('auto')
   const [overlay, setOverlay] = useState<OverlayOptions>({ boxes: true, labels: true, trails: true })
   const [focusId, setFocusId] = useState<string | null>(null)
+  const [panelOpen, setPanelOpen] = useState(false)
+  const runtime = useRuntime(panelOpen)
 
   const selectedCams = useMemo(() => cameras.filter((c) => selected.includes(c.id)), [cameras, selected])
   const processing = cameras.filter((c) => c.state === 'running').length
@@ -71,6 +75,8 @@ export function MonitoringPage() {
         }}
         overlay={overlay}
         onOverlay={setOverlay}
+        panelOpen={panelOpen}
+        onTogglePanel={() => setPanelOpen((o) => !o)}
       />
       {connection === 'offline' && cameras.length > 0 && (
         <p className="bg-destructive/15 px-4 py-1 text-sm text-destructive" role="alert">
@@ -80,6 +86,7 @@ export function MonitoringPage() {
       <div className="flex min-h-0 flex-1">
         <CameraSidebar cameras={cameras} selected={selected} onToggle={toggle} onSelectAll={selectAll} onClear={clear} />
         <main className="flex min-h-0 min-w-0 flex-1 flex-col">{body}</main>
+        {panelOpen && <ProcessingPanel runtime={runtime} onClose={() => setPanelOpen(false)} />}
       </div>
     </div>
   )

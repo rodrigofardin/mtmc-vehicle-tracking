@@ -8,6 +8,7 @@ services:
     build: .
     image: mtmc:gpu
     profiles: ["cli"]          # não sobe no `up`; `docker compose run mtmc ...` continua funcionando
+    shm_size: "4gb"            # workers do DataLoader (treino de Re-ID) usam /dev/shm
     volumes:
       - .:/workspace
       - ${AICITY_DIR:-D:/AICity22_Track1_MTMC_Tracking}:/AICity22_Track1_MTMC_Tracking:ro

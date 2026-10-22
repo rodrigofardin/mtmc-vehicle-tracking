@@ -7,6 +7,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends libgl1 libglib2
 WORKDIR /workspace
 COPY requirements-docker.txt .
 RUN pip install -r requirements-docker.txt
+# treino de Re-ID (reid_training/): converte o ONNX do OSNet-AIN para PyTorch
+RUN pip install onnx2torch
 
 # libs CUDA do pip (cuDNN/cuBLAS/...) e do TensorRT no caminho de carga (onnxruntime-gpu e TensorRT as reutilizam)
 ENV NV=/opt/conda/lib/python3.11/site-packages/nvidia

@@ -152,6 +152,7 @@ class CameraWorker(threading.Thread):
         super().__init__(daemon=True, name=f"cam-{info.cam_id}")
         self.info, self.cfg, self.clock, self.mode = info, cfg, clock, mode
         self.assoc = assoc
+        self.source = None            # fonte de detecção/tracking desta câmera (usada por /api/runtime, só leitura)
         self.hub = FrameHub()
         self.stop_evt = threading.Event()
         self.error: Optional[str] = None
@@ -206,6 +207,7 @@ class CameraWorker(threading.Thread):
             log.exception("%s: falha ao iniciar fonte de detecção", info.cam_id)
             self.error = f"{type(e).__name__}: {e}"
             return
+        self.source = source
         cap, pos, cur_loop = None, -1, -1
         ema = None
         while not self.stop_evt.is_set():

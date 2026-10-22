@@ -30,6 +30,37 @@ src/
 tests/unit (Vitest) · tests/e2e (Playwright, contra o stack real)
 ```
 
+## Painel "Modelos e limiares" (somente leitura)
+Botão no cabeçalho → painel lateral recolhível (as câmeras continuam visíveis). Abas: Visão geral, Modelos, Limiares e parâmetros,
+Por câmera, Histórico. Consulta `GET /api/runtime` apenas com o painel aberto (a cada 5 s), sem tocar nos streams ou na inferência.
+
+**Contrato (`mtmc/runtime_info.py`)** — resposta JSON: `read_only`, `revision` (hash da configuração efetiva), `config`
+(`file`, `file_mtime`, `sha256`, `changed_on_disk`, `diff[]`), `versions` (python/torch/tensorrt/onnxruntime/cuda/gpu),
+`models[]` (papel, formato **do runtime**, dispositivo, entradas, classes, câmeras que usam), `parameters[]` (`configured`, `applied`,
+`status` ∈ confirmed|unconfirmed|diverges, `scope`, `category`, `description`, `fixed_in_code`), `cameras[]` (valores efetivos e origem),
+`history.supported=false`.
+
+Regras: **configurado** = arquivo YAML relido do disco; **aplicado** = lido do objeto em execução (`predictor.args` do Ultralytics,
+argumentos do `BYTETracker` instanciado, sessão ONNX, `ICudaEngine`). Se o runtime não expõe o valor ⇒ "não confirmado pelo runtime".
+Formato/dispositivo vêm de metadados do runtime (`AutoBackend.format`, engine TensorRT, provedores do onnxruntime), nunca do nome do
+arquivo. Valores fixos no código (ex.: NMS 0,7 no caminho unificado) aparecem marcados "fixo no código". A precisão FP16 do engine
+é um metadado gravado pelo nosso exportador e é exibida como tal (não confirmada pelo runtime). Se o arquivo de configuração mudou
+depois da partida, a Visão geral mostra o par rodando × disco (só vale após reiniciar o backend).
+
+Não há parâmetros por câmera sobrescritos hoje (`detector`/`tracker` são globais); por câmera existem `offset_adjust`, `drift_ppm`,
+zonas e homografia, mostrados com a origem (herdado/sobrescrito/metadados). Histórico de alterações: **não existe** no backend.
+
+### Etapa 2 (proposta, NÃO implementada): edição
+Exigiria um contrato novo e seguro no backend antes de qualquer botão "Salvar":
+1. `PATCH /api/runtime/parameters` com `{id, value, expected_revision}`; o backend valida tipo/mín/máx por parâmetro (esquema declarado
+   no próprio backend) e rejeita se `expected_revision` não for a atual (evita sobrescrever edição concorrente).
+2. Cada parâmetro declara `apply: "hot" | "reload_model" | "restart_component"`; a UI mostra isso e pede confirmação com valores
+   anterior e novo antes de aplicar.
+3. Persistência explícita (arquivo de overrides versionado, não editar o YAML base) e trilha de auditoria
+   (`GET /api/runtime/history`: usuário, valor anterior/novo, data, revisão).
+4. A UI só declara "aplicado" depois que o `GET /api/runtime` seguinte confirmar o valor no objeto em execução.
+Autenticação/autorização é pré-requisito (o serviço hoje não tem).
+
 ## Comportamento relevante
 * Remover uma câmera do grid **não** para a inferência; só libera o WebSocket (após 1,5 s de carência).
 * Painéis fora da viewport ou aba oculta liberam o fluxo; layout não reabre conexões (contagem de referências).
@@ -63,9 +94,9 @@ docker compose stop frontend
 | `MTMC_CONFIG`, `MTMC_MODE` | mtmc-api | `configs/s01_gpu.yaml`, `live` | config do backend; `live` (YOLO+ByteTrack) ou `replay` (resultados salvos, sem GPU) |
 
 ## Testes realizados
-* Vitest: 41 testes (layouts, trilhas, desenho de caixas/rótulos/trilhas, protocolo, reconexão e timeout do stream, contagem de
+* Vitest: 50 testes (41 do monitor + 9 do painel de modelos e limiares) (layouts, trilhas, desenho de caixas/rótulos/trilhas, protocolo, reconexão e timeout do stream, contagem de
   referências, erros da API, grid com 1–12 câmeras, seleção/busca, layout, ampliar, estados de erro/reconexão, metadados).
-* Playwright (Edge, contra o backend real com GPU): 6 testes (descoberta de câmeras, canvas com pixels, seleção, layouts,
+* Playwright (Edge, contra o backend real com GPU): 9 testes (6 do monitor + 3 do painel: dados reais, consulta sem interromper streams, erro de API) (descoberta de câmeras, canvas com pixels, seleção, layouts,
   ampliar, sem WebSockets novos ao trocar layout, API fora do ar, HTTP 500).
 * Verificação manual no navegador: grid ao vivo, ampliar, queda e retorno do backend (reconecta sozinho).
 

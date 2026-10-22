@@ -1,5 +1,5 @@
 import { getConfig } from '@/lib/config'
-import type { CameraStatus, Health } from '@/types/api'
+import type { CameraStatus, Health, RuntimeInfo } from '@/types/api'
 
 export class ApiError extends Error {
   readonly status: number | null
@@ -30,4 +30,5 @@ async function getJson<T>(path: string, timeoutMs = 4000, signal?: AbortSignal):
 export const api = {
   health: (signal?: AbortSignal) => getJson<Health>('/health', 4000, signal),
   cameras: (signal?: AbortSignal) => getJson<CameraStatus[]>('/cameras', 4000, signal),
+  runtime: (signal?: AbortSignal) => getJson<RuntimeInfo>('/runtime', 8000, signal),
 }

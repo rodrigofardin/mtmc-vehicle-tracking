@@ -72,3 +72,50 @@ def test_unknown_camera_and_inaccessible_video(tmp_path):
         with pytest.raises(Exception):
             with c.websocket_connect("/api/cameras/zzz/ws"):
                 pass
+
+
+# ---------------------------------------------------------------- /api/runtime (somente leitura)
+def test_runtime_endpoint_structure_and_no_fake_values(tmp_path):
+    with TestClient(create_app(_cfg(tmp_path, 2))) as c:
+        _wait_running(c, 2)
+        r = c.get("/api/runtime").json()
+        assert r["read_only"] is True and r["mode"] == "replay"
+        assert r["history"]["supported"] is False                              # backend não guarda histórico
+        assert r["models"] == [] or all("role" in m for m in r["models"])      # replay: nenhum modelo executa
+        ids = {p["id"] for p in r["parameters"]}
+        assert {"detector.conf", "tracker.track_buffer", "association.accept_score", "server.speed"} <= ids
+        for p in r["parameters"]:
+            assert p["editable"] is False and p["status"] in ("confirmed", "unconfirmed", "diverges")
+        # replay não tem tracker nem detector em execução => nada "confirmado" para eles (sem inventar valores)
+        tr = next(p for p in r["parameters"] if p["id"] == "tracker.track_buffer")
+        assert tr["status"] == "unconfirmed" and tr["applied"] is None
+        assert [x["id"] for x in r["cameras"]] == ["c001", "c002"]
+        assert "video.fps" in r["cameras"][0]["params"]
+        # consultar não interrompe o processamento
+        a = c.get("/api/cameras").json()[0]["frames_published"]
+        for _ in range(5):
+            c.get("/api/runtime")
+        time.sleep(0.5)
+        assert c.get("/api/cameras").json()[0]["frames_published"] >= a
+
+
+def test_runtime_detects_config_changed_on_disk(tmp_path):
+    from mtmc.config import load_config
+    base = _cfg(tmp_path, 1)
+    import yaml
+    path = tmp_path / "live.yaml"
+    path.write_text(yaml.safe_dump({"cameras": base["cameras"], "metadata": base["metadata"],
+                                    "output": {"dir": str(tmp_path / "out")}, "server": {"mode": "replay"},
+                                    "association": {"accept_score": 0.5}}), encoding="utf-8")
+    cfg = load_config(path)
+    with TestClient(create_app(cfg)) as c:
+        r = c.get("/api/runtime").json()
+        assert r["config"]["changed_on_disk"] is False and r["config"]["file"] == str(path.resolve())
+        d = yaml.safe_load(path.read_text(encoding="utf-8"))
+        d["association"]["accept_score"] = 0.8
+        path.write_text(yaml.safe_dump(d), encoding="utf-8")
+        r2 = c.get("/api/runtime").json()
+        assert r2["config"]["changed_on_disk"] is True
+        assert any(x["key"] == "association.accept_score" and x["running"] == 0.5 and x["on_disk"] == 0.8 for x in r2["config"]["diff"])
+        p = next(p for p in r2["parameters"] if p["id"] == "association.accept_score")
+        assert p["configured"] == 0.8                       # valor do arquivo; "aplicado" segue não confirmado (replay)

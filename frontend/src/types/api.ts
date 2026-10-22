@@ -71,3 +71,88 @@ export interface FramePacket {
 
 export type StreamState = 'connecting' | 'waiting-frames' | 'streaming' | 'reconnecting' | 'closed'
 export type LayoutId = '1' | '2' | '4' | '6' | '9' | 'auto'
+
+/** GET /api/runtime — descrição SOMENTE LEITURA do que está em execução (mtmc/runtime_info.py). */
+export type ParamStatus = 'confirmed' | 'unconfirmed' | 'diverges'
+
+export interface RuntimeParam {
+  id: string
+  label: string
+  category: string
+  scope: 'global' | 'câmera' | 'modelo' | string
+  configured: unknown // valor no arquivo de configuração (relido do disco)
+  applied: unknown // valor lido do objeto em execução; null + status "unconfirmed" = não confirmado
+  status: ParamStatus
+  source: string // "runtime" (lido do objeto) | "config"
+  description: string
+  unit: string | null
+  editable: boolean
+  fixed_in_code: boolean
+}
+
+export interface RuntimeModelIO {
+  inputs: { name: string; shape: (number | string)[]; dtype: string }[]
+  outputs: { name: string; shape: (number | string)[]; dtype: string }[]
+}
+
+export interface RuntimeModel {
+  id: string
+  role: string
+  name: string | null
+  artifact: string | null
+  task?: string | null
+  format?: string | null
+  backend_class?: string | null
+  device?: string | null
+  load_state?: string | null
+  input_shape?: number[] | null
+  io_dtype?: string | null
+  io?: RuntimeModelIO
+  engine_metadata?: { imgsz?: number[]; batch?: number; args?: Record<string, unknown>; version?: string; date?: string; description?: string }
+  providers?: string[]
+  runtime_version?: string
+  stride?: number | null
+  end2end?: boolean | null
+  params?: number | null
+  classes: { id: number; name: string }[]
+  n_classes: number | null
+  cameras: string[]
+}
+
+export interface RuntimeCameraParam {
+  value: unknown
+  origin: string
+}
+
+export interface RuntimeCamera {
+  id: string
+  state: string
+  error: string | null
+  model: string | null
+  model_load: string | null
+  tracker: string | null
+  params: Record<string, RuntimeCameraParam>
+}
+
+export interface RuntimeInfo {
+  schema_version: number
+  read_only: boolean
+  generated_at: string
+  mode: 'live' | 'replay'
+  started_at: string
+  revision: string
+  config: {
+    file: string | null
+    file_mtime: string | null
+    sha256: string | null
+    changed_on_disk: boolean | null
+    diff: { key: string; running: unknown; on_disk: unknown }[]
+    error?: string
+  }
+  versions: Record<string, string | null>
+  history: { supported: boolean; reason?: string }
+  models: RuntimeModel[]
+  parameters: RuntimeParam[]
+  cameras: RuntimeCamera[]
+  association: Record<string, unknown>
+}

@@ -1,0 +1,35 @@
+{
+  "global": {
+    "IDF1": 0.4241210502892746,
+    "IDP": 0.368108715499684,
+    "IDR": 0.5002385951517465,
+    "IDTP": 10483,
+    "IDFP": 17995,
+    "IDFN": 10473,
+    "pred_ids_kept": 124,
+    "gt_detections": 20956,
+    "pred_detections_kept": 28478
+  },
+  "association": {
+    "pair_precision": 1.0,
+    "pair_recall": 0.5,
+    "true_associations": 22,
+    "false_associations": 0,
+    "missed_associations": 22,
+    "tracklets_with_gt": 113,
+    "tracklets_total": 572
+  },
+  "local_tracking": {
+    "IDF1": 0.37125247188902843,
+    "IDTP": 12860,
+    "IDFP": 35463,
+    "IDFN": 8096,
+    "ID_switches": 36,
+    "gt_detections": 20956,
+    "pred_detections": 48323
+  },
+  "notes": [
+    "IDF1 global: implementa\u00e7\u00e3o pr\u00f3pria (n\u00e3o \u00e9 o eval.py oficial); protocolo AIC22: ROI + s\u00f3 IDs em >=2 c\u00e2meras.",
+    "local_tracking: o GT s\u00f3 anota ve\u00edculos vistos em >=2 c\u00e2meras; ve\u00edculos sem anota\u00e7\u00e3o contam como FP (IDF1 local subestimado)."
+  ]
+}
