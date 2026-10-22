@@ -38,6 +38,8 @@ DEFAULTS = {
         "appearance_scale": [0.0, 1.0], "spatial_threshold": 0.5,
         "accept_score": 0.7, "ambiguity_margin": 0.1,
         "require_decisive_cue": True, "min_tracklet_frames": 10,
+        # método aprendido: "rules" (padrão) | "learned" (pontuação logística de pares + agrupamento global)
+        "method": "rules", "scorer": None, "cluster_threshold": 0.0, "veto_logit": -4.0,
     },
     "output": {"dir": "outputs"},
     # Serviço de streaming para o frontend (modo `serve`)
@@ -102,6 +104,8 @@ def load_config(path) -> dict:
         cal["pattern"] = res(cal["pattern"].replace("{cam}", "@@CAM@@")).replace("@@CAM@@", "{cam}")
         for cam, H in load_calibration(cal, [c["id"] for c in cfg["cameras"]]).items():
             cfg["spatial"]["homographies"].setdefault(cam, H)
+    if cfg["association"].get("scorer"):
+        cfg["association"]["scorer"] = res(cfg["association"]["scorer"])
     if cfg["evaluation"].get("roi_pattern"):
         cfg["evaluation"]["roi_pattern"] = res(cfg["evaluation"]["roi_pattern"].replace("{cam}", "@@CAM@@")).replace("@@CAM@@", "{cam}")
     cfg["_config_path"] = str(p)

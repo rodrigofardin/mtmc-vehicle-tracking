@@ -10,6 +10,7 @@ Princípios:
 from __future__ import annotations
 
 import itertools
+import math
 import json
 from collections import defaultdict
 from dataclasses import dataclass, field, asdict
@@ -170,6 +171,8 @@ class GlobalIdentity:
 
 
 def associate(tracklets: List[Tracklet], cfg: dict) -> Tuple[List[GlobalIdentity], List[Decision]]:
+    if cfg["association"].get("method", "rules") == "learned":
+        return associate_learned(tracklets, cfg)
     acfg = cfg["association"]
     by_uid = {t.uid: t for t in tracklets}
     decisions: List[Decision] = []
@@ -260,3 +263,60 @@ def save_association(identities, decisions, path_dir) -> None:
 
 def uid_to_gid(identities) -> Dict[str, str]:
     return {u: i.gid for i in identities for u in i.members}
+
+
+# ---------------------------------------------------------------- método aprendido (pontuação de pares + agrupamento global)
+def associate_learned(tracklets: List[Tracklet], cfg: dict) -> Tuple[List[GlobalIdentity], List[Decision]]:
+    """Pontua cada par candidato com o modelo logístico (`association.scorer`) e agrupa globalmente (ligação média com
+    restrições). Mesmo formato de saída de `associate` (identidades + decisões com evidências)."""
+    from .cluster import agglomerate
+    from .pair_scorer import load_scorer, pair_features
+    acfg = cfg["association"]
+    H = cfg["spatial"].get("homographies") or {}
+    scorer = load_scorer(acfg["scorer"])
+    n = len(tracklets)
+    cams = [t.cam for t in tracklets]
+    edges: Dict[Tuple[int, int], float] = {}
+    meta: Dict[Tuple[int, int], Tuple[str, dict, float]] = {}
+    for i, j in itertools.combinations(range(n), 2):
+        a, b = tracklets[i], tracklets[j]
+        if a.cam == b.cam or a.n_obs < acfg["min_tracklet_frames"] or b.n_obs < acfg["min_tracklet_frames"]:
+            continue
+        tr = temporal_relation(a, b, acfg)
+        if tr is None:
+            continue
+        rel, tdet = tr
+        f = pair_features(a, b, rel, H, tdet.get("overlap_s", 0.0), tdet.get("gap_s", 0.0))
+        z = scorer.logit(f, rel)
+        edges[(i, j)] = z
+        meta[(i, j)] = (rel, f, z)
+    clusters = agglomerate(n, cams, edges, tau=float(acfg.get("cluster_threshold", 0.0)), veto=float(acfg.get("veto_logit", -4.0)))
+    cid = {}
+    for k, members in enumerate(clusters):
+        for m in members:
+            cid[m] = k
+    decisions: List[Decision] = []
+    conflict_nodes = set()
+    for (i, j), (rel, f, z) in meta.items():
+        p = 1 / (1 + math.exp(-z))
+        same = cid[i] == cid[j]
+        status = "accepted" if same else ("conflict" if p >= 0.5 else "rejected_learned")
+        if status == "conflict":
+            conflict_nodes.update((i, j))
+        decisions.append(Decision(tracklets[i].uid, tracklets[j].uid, rel, status, p,
+                                  {"method": "learned", "logit": round(z, 3), "p": round(p, 4), "features": {k: round(v, 4) for k, v in f.items()}},
+                                  "mesmo grupo (ligação média >= limiar, sem veto)" if same else
+                                  ("p >= 0,5 mas bloqueado pelo agrupamento (veto, câmera repetida ou ligação média)" if p >= 0.5 else "p < 0,5")))
+    by_pair = {(d.a, d.b): d for d in decisions}
+    order = sorted(range(len(clusters)), key=lambda k: min(tracklets[m].t_global_first for m in clusters[k]))
+    identities = []
+    for g, k in enumerate(order, 1):
+        uids = sorted(tracklets[m].uid for m in clusters[k])
+        links = [asdict(by_pair[(a, b)]) for a, b in itertools.combinations(uids, 2) if (a, b) in by_pair and by_pair[(a, b)].status == "accepted"]
+        weak = any(l["score"] < 0.5 for l in links)
+        unc = weak or any(m in conflict_nodes for m in clusters[k])
+        identities.append(GlobalIdentity(
+            gid=f"G{g:04d}", members=uids, links=links, uncertain=unc,
+            note=("ligação fraca ou candidato concorrente bloqueado" if unc else
+                  ("sem associação (única observação ou sem par provável)" if len(uids) == 1 else ""))))
+    return identities, decisions

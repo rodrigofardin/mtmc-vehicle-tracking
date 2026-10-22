@@ -1,0 +1,7 @@
+# Referência EM AMOSTRA (otimista): associação aprendida no S01 com o modelo treinado no próprio S01. Serve só para escolher
+# limiares de agrupamento (cluster_threshold, veto_logit), que depois são aplicados ao S02 (cena não vista).
+extends: exp_ft_s01_yolov8n.yaml
+association:
+  method: learned
+  scorer: "../models/pair_scorer_s01.json"
+output: {dir: "../outputs/exp/s01_learned"}

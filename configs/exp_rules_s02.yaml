@@ -1,0 +1,8 @@
+# Varredura das REGRAS de associação (Re-ID ajustado, YOLOv8n TRT, detecções reaproveitadas de exp_ft). S01 ajusta; S02 testa.
+extends: exp_ft_s02_yolov8n.yaml
+tuning:
+  grid:
+    association.class_groups: [[], [["car", "truck", "bus"]], [["car", "truck"]]]
+    association.min_tracklet_frames: [10, 6, 4]
+    association.ambiguity_margin: [0.1, 0.03]
+output: {dir: "../outputs/exp/s02_yolov8n_ft"}

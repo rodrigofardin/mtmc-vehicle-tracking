@@ -1,0 +1,9 @@
+# Associação APRENDIDA (pontuação logística de pares + agrupamento global) no S02; o modelo foi treinado no S01 (cena não vista aqui).
+extends: exp_ft_s02_yolov8n.yaml
+association:
+  method: learned
+  scorer: "../models/pair_scorer_s01.json"
+  cluster_threshold: -1.0
+  veto_logit: -5.0
+output: {dir: "../outputs/exp/s02_learned"}
+

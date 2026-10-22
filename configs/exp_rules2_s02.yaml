@@ -1,0 +1,9 @@
+# Regras de associação melhoradas (classe agrupada; parâmetros escolhidos no S01) testadas no S02.
+extends: exp_ft_s02_yolov8n.yaml
+association:
+  class_groups: [["car", "truck", "bus"]]
+  appearance_threshold: 0.2
+  accept_score: 0.5
+spatial:
+  max_ground_dist: 150.0
+output: {dir: "../outputs/exp/s02_rules2"}

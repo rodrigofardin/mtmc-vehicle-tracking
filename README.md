@@ -68,6 +68,12 @@ Cosseno médio: mesmo veículo 0,42; veículos diferentes 0,10 (p90 0,24) ⇒ li
 0,504 → 0,723. No pipeline completo (YOLOv8n TRT, limiares escolhidos no S01): IDF1 0,613 → **0,652** (S01) e 0,383 → **0,424** (S02), IDR 0,650 → 0,725 e
 0,457 → 0,500. Detalhes e limitações em [reid_training/RESULTS.md](reid_training/RESULTS.md).
 
+### Associação aprendida (pontuação logística de pares + agrupamento global)
+Depois do [diagnóstico](docs/DIAGNOSTICO.md) (Re-ID perfeito não melhorava o IDF1; a classe estrita era a maior perda), as regras foram reformuladas
+(`association.method: learned`): classe vira feature (não veto), pontuação aprendida com geometria no plano de chão e agrupamento hierárquico com veto
+e uma observação por câmera. Teste limpo (modelo treinado no S01, avaliado no S02): IDF1 **0,424 → 0,458**; classes agrupadas nas regras originais: 0,437.
+No S01 as regras melhoradas chegam a 0,675 (em amostra). Detalhes, resultados e limitações em [docs/ASSOCIACAO.md](docs/ASSOCIACAO.md).
+
 ### Pipeline completo (detector YOLOv8n, limiares ajustados no S01)
 | Cenário | IDF1 | IDP | IDR | precisão/recall de pares |
 |---|---|---|---|---|

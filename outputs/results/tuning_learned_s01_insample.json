@@ -1,0 +1,182 @@
+[
+  {
+    "params": {
+      "association.cluster_threshold": -1,
+      "association.veto_logit": -8
+    },
+    "IDF1": 0.6853226579605374,
+    "IDP": 0.6201406799531067,
+    "IDR": 0.7658163708486551,
+    "pair_precision": 0.9908675799086758,
+    "pair_recall": 0.7022653721682848,
+    "linked": 106
+  },
+  {
+    "params": {
+      "association.cluster_threshold": -1,
+      "association.veto_logit": -5
+    },
+    "IDF1": 0.6853226579605374,
+    "IDP": 0.6201406799531067,
+    "IDR": 0.7658163708486551,
+    "pair_precision": 0.9908675799086758,
+    "pair_recall": 0.7022653721682848,
+    "linked": 106
+  },
+  {
+    "params": {
+      "association.cluster_threshold": -2,
+      "association.veto_logit": -8
+    },
+    "IDF1": 0.6841636895933554,
+    "IDP": 0.6168372093023256,
+    "IDR": 0.7679879549468686,
+    "pair_precision": 0.9909502262443439,
+    "pair_recall": 0.7087378640776699,
+    "linked": 110
+  },
+  {
+    "params": {
+      "association.cluster_threshold": -2,
+      "association.veto_logit": -5
+    },
+    "IDF1": 0.6841636895933554,
+    "IDP": 0.6168372093023256,
+    "IDR": 0.7679879549468686,
+    "pair_precision": 0.9909502262443439,
+    "pair_recall": 0.7087378640776699,
+    "linked": 110
+  },
+  {
+    "params": {
+      "association.cluster_threshold": -3,
+      "association.veto_logit": -8
+    },
+    "IDF1": 0.6772373292480531,
+    "IDP": 0.6056675724430846,
+    "IDR": 0.7679879549468686,
+    "pair_precision": 0.9523809523809523,
+    "pair_recall": 0.7119741100323624,
+    "linked": 112
+  },
+  {
+    "params": {
+      "association.cluster_threshold": -3,
+      "association.veto_logit": -5
+    },
+    "IDF1": 0.6772373292480531,
+    "IDP": 0.6056675724430846,
+    "IDR": 0.7679879549468686,
+    "pair_precision": 0.9777777777777777,
+    "pair_recall": 0.7119741100323624,
+    "linked": 113
+  },
+  {
+    "params": {
+      "association.cluster_threshold": 0,
+      "association.veto_logit": -8
+    },
+    "IDF1": 0.6725689443291886,
+    "IDP": 0.618595041322314,
+    "IDR": 0.7368619162058082,
+    "pair_precision": 0.9903846153846154,
+    "pair_recall": 0.6666666666666666,
+    "linked": 107
+  },
+  {
+    "params": {
+      "association.cluster_threshold": 0,
+      "association.veto_logit": -5
+    },
+    "IDF1": 0.6725689443291886,
+    "IDP": 0.618595041322314,
+    "IDR": 0.7368619162058082,
+    "pair_precision": 0.9903846153846154,
+    "pair_recall": 0.6666666666666666,
+    "linked": 107
+  },
+  {
+    "params": {
+      "association.cluster_threshold": 0,
+      "association.veto_logit": -3
+    },
+    "IDF1": 0.6701400367613027,
+    "IDP": 0.616730759869542,
+    "IDR": 0.7336769261950952,
+    "pair_precision": 0.9901477832512315,
+    "pair_recall": 0.6504854368932039,
+    "linked": 108
+  },
+  {
+    "params": {
+      "association.cluster_threshold": -1,
+      "association.veto_logit": -3
+    },
+    "IDF1": 0.6676885185767437,
+    "IDP": 0.6097140806316546,
+    "IDR": 0.7378463676636651,
+    "pair_precision": 0.9902912621359223,
+    "pair_recall": 0.6601941747572816,
+    "linked": 108
+  },
+  {
+    "params": {
+      "association.cluster_threshold": -2,
+      "association.veto_logit": -3
+    },
+    "IDF1": 0.6658930899608866,
+    "IDP": 0.6056732205962574,
+    "IDR": 0.7394099082143788,
+    "pair_precision": 0.9903381642512077,
+    "pair_recall": 0.6634304207119741,
+    "linked": 112
+  },
+  {
+    "params": {
+      "association.cluster_threshold": -3,
+      "association.veto_logit": -3
+    },
+    "IDF1": 0.6648859295963663,
+    "IDP": 0.5997113526851183,
+    "IDR": 0.7459536149636622,
+    "pair_precision": 0.9857142857142858,
+    "pair_recall": 0.6699029126213593,
+    "linked": 115
+  },
+  {
+    "params": {
+      "association.cluster_threshold": 1,
+      "association.veto_logit": -8
+    },
+    "IDF1": 0.6516909135573328,
+    "IDP": 0.6163616180912306,
+    "IDR": 0.6913165590526102,
+    "pair_precision": 1.0,
+    "pair_recall": 0.6084142394822006,
+    "linked": 105
+  },
+  {
+    "params": {
+      "association.cluster_threshold": 1,
+      "association.veto_logit": -5
+    },
+    "IDF1": 0.6516909135573328,
+    "IDP": 0.6163616180912306,
+    "IDR": 0.6913165590526102,
+    "pair_precision": 1.0,
+    "pair_recall": 0.6084142394822006,
+    "linked": 105
+  },
+  {
+    "params": {
+      "association.cluster_threshold": 1,
+      "association.veto_logit": -3
+    },
+    "IDF1": 0.6516909135573328,
+    "IDP": 0.6163616180912306,
+    "IDR": 0.6913165590526102,
+    "pair_precision": 1.0,
+    "pair_recall": 0.6084142394822006,
+    "linked": 105
+  }
+]

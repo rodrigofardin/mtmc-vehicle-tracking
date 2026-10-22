@@ -1,0 +1,37 @@
+{
+ "S02 baseline (regras originais)": {
+  "IDF1": 0.4241,
+  "IDP": 0.3681,
+  "IDR": 0.5002,
+  "pair_precision": 1.0,
+  "pair_recall": 0.5
+ },
+ "S02 regras melhoradas (escolhidas no S01)": {
+  "IDF1": 0.437,
+  "IDP": 0.3686,
+  "IDR": 0.5365,
+  "pair_precision": 1.0,
+  "pair_recall": 0.6364
+ },
+ "S02 aprendida (treinada no S01, tau -1)": {
+  "IDF1": 0.4579,
+  "IDP": 0.4151,
+  "IDR": 0.5104,
+  "pair_precision": 1.0,
+  "pair_recall": 0.5455
+ },
+ "S01 baseline (regras originais)": {
+  "IDF1": 0.6522,
+  "IDP": 0.5925,
+  "IDR": 0.7252,
+  "pair_precision": 0.9247,
+  "pair_recall": 0.5566
+ },
+ "S01 aprendida (treinada no S02 [36 positivos], tau -1)": {
+  "IDF1": 0.6208,
+  "IDP": 0.6187,
+  "IDR": 0.6229,
+  "pair_precision": 0.9889,
+  "pair_recall": 0.5761
+ }
+}

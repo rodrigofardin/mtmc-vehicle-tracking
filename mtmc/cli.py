@@ -196,6 +196,38 @@ def cmd_diagnose(cfg, a):
     print(json.dumps(res, indent=2, ensure_ascii=False, default=str))
 
 
+def cmd_train_scorer(cfg, a):
+    """Treina a pontuação aprendida de pares com o GT de uma ou mais cenas (já processadas até `tracklets.json`)."""
+    from .evaluation import load_gt, tracklet_to_gt
+    from .pair_scorer import _auc, fit_scorer, grouped_cv, training_pairs
+    from .tracklets import load_tracklets
+    cfgs = [cfg] + [load_config(p) for p in (a.train_configs or [])]
+    pairs, scenes = [], []
+    for c in cfgs:
+        reg = _registry(c)
+        ts = load_tracklets(out(c, "tracklets.json"))
+        gt = load_gt(c["evaluation"]["gt_dir"], reg.cam_ids)
+        u2g = tracklet_to_gt(ts, gt, c["evaluation"]["iou_threshold"])
+        pp = training_pairs(ts, u2g, c)
+        # ids de GT são locais a cada cena: torna-os únicos entre cenas
+        off = len(scenes) * 10_000_000
+        for p in pp:
+            p["ga"] += off
+            p["gb"] += off
+        pairs += pp
+        scenes.append(c["output"]["dir"])
+        print(f"{c['output']['dir']}: {len(ts)} tracklets, {len(u2g)} rotulados, {len(pp)} pares, {sum(p['y'] for p in pp)} positivos")
+    scorer = fit_scorer(pairs, meta={"treino": scenes, "pares": len(pairs), "positivos": int(sum(p["y"] for p in pairs))})
+    for rel, m in scorer.models.items():
+        P = [p for p in pairs if p["rel"] == rel]
+        z = [m.logit(p["f"]) for p in P]
+        print(f"[{rel}] pares={len(P)} AUC(treino)={_auc(z, [p['y'] for p in P])}")
+        print("   pesos:", {k: round(float(w), 2) for k, w in zip(m.features, m.w)}, "viés", round(m.b, 2))
+    print("validação por veículo (2 dobras):", json.dumps(grouped_cv(pairs)))
+    scorer.save(a.scorer_out)
+    print("modelo salvo em", a.scorer_out)
+
+
 def cmd_tune(cfg, a):
     """Varre limiares de associação contra o GT (usa tracklets.json com embeddings já calculados)."""
     import copy
@@ -209,7 +241,7 @@ def cmd_tune(cfg, a):
         print("tune exige evaluation.gt_dir")
         return 2
     _, _, _, ge, u2g = _gt_setup(cfg, reg, ts)
-    grid = cfg.get("tuning", {}).get("grid") or {}
+    grid = json.loads(a.grid) if a.grid else (cfg.get("tuning", {}).get("grid") or {})
     keys = list(grid)
     results = []
     for combo in itertools.product(*[grid[k] for k in keys]):
@@ -277,7 +309,10 @@ def cmd_run(cfg, a):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="mtmc")
     ap.add_argument("command", choices=["inspect", "snapshot", "detect", "tracklets", "associate",
-                                        "visualize", "evaluate", "run", "serve", "reid-check", "tune", "diagnose"])
+                                        "visualize", "evaluate", "run", "serve", "reid-check", "tune", "diagnose", "train-scorer"])
+    ap.add_argument("--train-configs", nargs="*", help="train-scorer: configs adicionais de cenas de treino")
+    ap.add_argument("--scorer-out", default="models/pair_scorer.json")
+    ap.add_argument("--grid", help="tune: grade JSON que substitui `tuning.grid` do YAML")
     ap.add_argument("--per-track", type=int, default=3, help="reid-check: recortes por (câmera, veículo)")
     ap.add_argument("--serve-mode", choices=["live", "replay"], help="serve: live|replay")
     ap.add_argument("--host")
@@ -300,7 +335,7 @@ def main(argv=None):
     fn = {"inspect": cmd_inspect, "snapshot": cmd_snapshot, "detect": cmd_detect,
           "tracklets": cmd_tracklets, "associate": cmd_associate, "visualize": cmd_visualize,
           "evaluate": cmd_evaluate, "run": cmd_run, "serve": cmd_serve,
-          "reid-check": cmd_reid_check, "tune": cmd_tune, "diagnose": cmd_diagnose}[a.command]
+          "reid-check": cmd_reid_check, "tune": cmd_tune, "diagnose": cmd_diagnose, "train-scorer": cmd_train_scorer}[a.command]
     r = fn(cfg, a)
     return r if isinstance(r, int) else 0
 
