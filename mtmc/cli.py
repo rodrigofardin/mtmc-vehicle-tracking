@@ -179,6 +179,23 @@ def cmd_evaluate(cfg, a):
     print(json.dumps(res, indent=2))
 
 
+def cmd_diagnose(cfg, a):
+    """Experimentos oráculo + quebra de causas da associação (usa tracklets.json já gerado e o GT)."""
+    from .diagnose import breakdown, run_experiments, tracklet_quality
+    from .tracklets import load_tracklets
+    reg = _registry(cfg)
+    ts = load_tracklets(out(cfg, "tracklets.json"))
+    if not cfg["evaluation"].get("gt_dir"):
+        print("diagnose exige evaluation.gt_dir")
+        return 2
+    gt, _, _, ge, u2g = _gt_setup(cfg, reg, ts)
+    exps, real = run_experiments(cfg, ts, ge, u2g)
+    res = {"experimentos": exps, "causas": breakdown(cfg, ts, u2g, real), "tracklets": tracklet_quality(ts, u2g, ge, gt),
+           "parametros": {"association": cfg["association"], "max_ground_dist": cfg["spatial"].get("max_ground_dist")}}
+    out(cfg, "diagnosis.json").write_text(json.dumps(res, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
+    print(json.dumps(res, indent=2, ensure_ascii=False, default=str))
+
+
 def cmd_tune(cfg, a):
     """Varre limiares de associação contra o GT (usa tracklets.json com embeddings já calculados)."""
     import copy
@@ -260,7 +277,7 @@ def cmd_run(cfg, a):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="mtmc")
     ap.add_argument("command", choices=["inspect", "snapshot", "detect", "tracklets", "associate",
-                                        "visualize", "evaluate", "run", "serve", "reid-check", "tune"])
+                                        "visualize", "evaluate", "run", "serve", "reid-check", "tune", "diagnose"])
     ap.add_argument("--per-track", type=int, default=3, help="reid-check: recortes por (câmera, veículo)")
     ap.add_argument("--serve-mode", choices=["live", "replay"], help="serve: live|replay")
     ap.add_argument("--host")
@@ -283,7 +300,7 @@ def main(argv=None):
     fn = {"inspect": cmd_inspect, "snapshot": cmd_snapshot, "detect": cmd_detect,
           "tracklets": cmd_tracklets, "associate": cmd_associate, "visualize": cmd_visualize,
           "evaluate": cmd_evaluate, "run": cmd_run, "serve": cmd_serve,
-          "reid-check": cmd_reid_check, "tune": cmd_tune}[a.command]
+          "reid-check": cmd_reid_check, "tune": cmd_tune, "diagnose": cmd_diagnose}[a.command]
     r = fn(cfg, a)
     return r if isinstance(r, int) else 0
 

@@ -1,0 +1,152 @@
+{
+  "experimentos": {
+    "A_real": {
+      "IDF1": 0.4241,
+      "IDP": 0.3681,
+      "IDR": 0.5002,
+      "pair_precision": 1.0,
+      "pair_recall": 0.5,
+      "true_assoc": 22,
+      "false_assoc": 0,
+      "missed_assoc": 22
+    },
+    "B_oraculo_associacao": {
+      "IDF1": 0.3858,
+      "IDP": 0.8175,
+      "IDR": 0.2525,
+      "pair_precision": 1.0,
+      "pair_recall": 1.0,
+      "true_assoc": 44,
+      "false_assoc": 0,
+      "missed_assoc": 0
+    },
+    "C_oraculo_aparencia": {
+      "IDF1": 0.3441,
+      "IDP": 0.8162,
+      "IDR": 0.218,
+      "pair_precision": 1.0,
+      "pair_recall": 0.5682,
+      "true_assoc": 25,
+      "false_assoc": 0,
+      "missed_assoc": 19
+    },
+    "C2_oraculo_aparencia_sem_espaco": {
+      "IDF1": 0.3441,
+      "IDP": 0.8162,
+      "IDR": 0.218,
+      "pair_precision": 1.0,
+      "pair_recall": 0.5682,
+      "true_assoc": 25,
+      "false_assoc": 0,
+      "missed_assoc": 19
+    },
+    "D_real_sem_espaco": {
+      "IDF1": 0.4049,
+      "IDP": 0.3438,
+      "IDR": 0.4924,
+      "pair_precision": 0.9565,
+      "pair_recall": 0.5,
+      "true_assoc": 22,
+      "false_assoc": 1,
+      "missed_assoc": 22
+    }
+  },
+  "causas": {
+    "pares_positivos_total": 44,
+    "causas_pares_perdidos": {
+      "ligado": 22,
+      "classes incompatíveis (ex.: car × truck)": 11,
+      "tracklet curto demais (< min_tracklet_frames)": 5,
+      "sobreposição temporal menor que min_overlap_s": 2,
+      "score combinado abaixo de accept_score": 2,
+      "aceito pelos cues mas bloqueado (ambiguous)": 1,
+      "intervalo entre tracklets maior que max_gap_s": 1
+    },
+    "origem_falsos_links": {},
+    "relacao_temporal_pares_verdadeiros": {
+      "simultaneous": 14,
+      "transition": 22
+    },
+    "nota": "pares positivos = pares de tracklets de câmeras diferentes que o GT diz serem o mesmo veículo; 'ligado' inclui ligações por cadeia",
+    "gap_s_pares_verdadeiros_incompativeis": {
+      "n": 3,
+      "p50": -0.1,
+      "p90": 49.9
+    },
+    "cue_aparencia": {
+      "auc": null,
+      "pos_n": 3,
+      "neg_n": 756,
+      "melhor_limiar_f1": {
+        "f1": 0.8696,
+        "threshold": 0.5708,
+        "precision": 0.9524,
+        "recall": 0.8
+      }
+    },
+    "cue_espacial": {
+      "auc_menor_distancia": null,
+      "dist_m_positivos_p50_p90": null,
+      "dist_m_negativos_p50_p10": [
+        48.6,
+        21.9
+      ],
+      "melhor_limiar_f1": {
+        "f1": 0.8,
+        "threshold": -6.6695,
+        "precision": 1.0,
+        "recall": 0.6667
+      }
+    },
+    "melhor_combinacao_cos_e_dist_f1": {
+      "f1": 1.0,
+      "cos_min": 0.55,
+      "dist_max_m": 40,
+      "precision": 1.0,
+      "recall": 1.0
+    }
+  },
+  "tracklets": {
+    "tracklets_total": 572,
+    "tracklets_com_gt": 113,
+    "tracklets_sem_gt": 459,
+    "gt_boxes": 20956,
+    "gt_boxes_casadas_por_alguma_deteccao": 13117,
+    "cobertura_gt_global": 0.6259,
+    "pares_camera_veiculo_no_gt": 450,
+    "tracklets_por_(camera,veiculo)": {
+      "media": 1.08,
+      "p90": 1.0,
+      "fracao_fragmentada(>1)": 0.076
+    },
+    "cobertura_por_(camera,veiculo)": {
+      "mediana": 0.33,
+      "p10": 0.0,
+      "fracao_com_cobertura<50%": 0.58
+    }
+  },
+  "parametros": {
+    "association": {
+      "min_overlap_s": 0.5,
+      "max_gap_s": 30.0,
+      "min_gap_s": 0.0,
+      "class_compatibility": "strict",
+      "weights": {
+        "appearance": 1.0,
+        "spatial": 1.0
+      },
+      "appearance_threshold": 0.25,
+      "appearance_threshold_transition": null,
+      "appearance_scale": [
+        0.3,
+        0.7
+      ],
+      "spatial_threshold": 0.5,
+      "accept_score": 0.5,
+      "ambiguity_margin": 0.1,
+      "require_decisive_cue": true,
+      "min_tracklet_frames": 10
+    },
+    "max_ground_dist": 150.0
+  }
+}

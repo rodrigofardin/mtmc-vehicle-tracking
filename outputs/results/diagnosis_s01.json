@@ -1,0 +1,164 @@
+{
+  "experimentos": {
+    "A_real": {
+      "IDF1": 0.6522,
+      "IDP": 0.5925,
+      "IDR": 0.7252,
+      "pair_precision": 0.9247,
+      "pair_recall": 0.5566,
+      "true_assoc": 172,
+      "false_assoc": 14,
+      "missed_assoc": 137
+    },
+    "B_oraculo_associacao": {
+      "IDF1": 0.7534,
+      "IDP": 0.8305,
+      "IDR": 0.6893,
+      "pair_precision": 1.0,
+      "pair_recall": 1.0,
+      "true_assoc": 309,
+      "false_assoc": 0,
+      "missed_assoc": 0
+    },
+    "C_oraculo_aparencia": {
+      "IDF1": 0.6575,
+      "IDP": 0.8292,
+      "IDR": 0.5447,
+      "pair_precision": 1.0,
+      "pair_recall": 0.5631,
+      "true_assoc": 174,
+      "false_assoc": 0,
+      "missed_assoc": 135
+    },
+    "C2_oraculo_aparencia_sem_espaco": {
+      "IDF1": 0.6736,
+      "IDP": 0.823,
+      "IDR": 0.5701,
+      "pair_precision": 1.0,
+      "pair_recall": 0.5987,
+      "true_assoc": 185,
+      "false_assoc": 0,
+      "missed_assoc": 124
+    },
+    "D_real_sem_espaco": {
+      "IDF1": 0.6442,
+      "IDP": 0.618,
+      "IDR": 0.6728,
+      "pair_precision": 0.9042,
+      "pair_recall": 0.4887,
+      "true_assoc": 151,
+      "false_assoc": 16,
+      "missed_assoc": 158
+    }
+  },
+  "causas": {
+    "pares_positivos_total": 309,
+    "causas_pares_perdidos": {
+      "ligado": 172,
+      "classes incompatíveis (ex.: car × truck)": 50,
+      "tracklet curto demais (< min_tracklet_frames)": 35,
+      "aceito pelos cues mas bloqueado (ambiguous)": 13,
+      "aceito pelos cues mas bloqueado (conflict)": 11,
+      "intervalo entre tracklets maior que max_gap_s": 7,
+      "reprovado: só espaço": 6,
+      "reprovado: só aparência": 5,
+      "sobreposição temporal menor que min_overlap_s": 5,
+      "score combinado abaixo de accept_score": 5
+    },
+    "origem_falsos_links": {
+      "falso link (GT diferente, mesmo ID global)": 14,
+      "falso:?": 3,
+      "falso:transition": 7,
+      "falso:simultaneous": 4
+    },
+    "relacao_temporal_pares_verdadeiros": {
+      "simultaneous": 206,
+      "transition": 54,
+      "incompativel": 2
+    },
+    "nota": "pares positivos = pares de tracklets de câmeras diferentes que o GT diz serem o mesmo veículo; 'ligado' inclui ligações por cadeia",
+    "gap_s_pares_verdadeiros_incompativeis": {
+      "n": 12,
+      "p50": 61.0,
+      "p90": 88.2
+    },
+    "cue_aparencia": {
+      "auc": 0.8959,
+      "pos_n": 40,
+      "neg_n": 6387,
+      "melhor_limiar_f1": {
+        "f1": 0.7335,
+        "threshold": 0.4857,
+        "precision": 0.7031,
+        "recall": 0.7667
+      }
+    },
+    "cue_espacial": {
+      "auc_menor_distancia": 0.7508,
+      "dist_m_positivos_p50_p90": [
+        14.1,
+        126.7
+      ],
+      "dist_m_negativos_p50_p10": [
+        44.3,
+        16.0
+      ],
+      "melhor_limiar_f1": {
+        "f1": 0.6954,
+        "threshold": -8.4116,
+        "precision": 0.7019,
+        "recall": 0.689
+      }
+    },
+    "melhor_combinacao_cos_e_dist_f1": {
+      "f1": 0.8713,
+      "cos_min": 0.4,
+      "dist_max_m": 20,
+      "precision": 0.9496,
+      "recall": 0.8049
+    }
+  },
+  "tracklets": {
+    "tracklets_total": 510,
+    "tracklets_com_gt": 273,
+    "tracklets_sem_gt": 237,
+    "gt_boxes": 34537,
+    "gt_boxes_casadas_por_alguma_deteccao": 29175,
+    "cobertura_gt_global": 0.8447,
+    "pares_camera_veiculo_no_gt": 409,
+    "tracklets_por_(camera,veiculo)": {
+      "media": 1.08,
+      "p90": 1.0,
+      "fracao_fragmentada(>1)": 0.071
+    },
+    "cobertura_por_(camera,veiculo)": {
+      "mediana": 0.809,
+      "p10": 0.213,
+      "fracao_com_cobertura<50%": 0.213
+    }
+  },
+  "parametros": {
+    "association": {
+      "min_overlap_s": 0.5,
+      "max_gap_s": 30.0,
+      "min_gap_s": 0.0,
+      "class_compatibility": "strict",
+      "weights": {
+        "appearance": 1.0,
+        "spatial": 1.0
+      },
+      "appearance_threshold": 0.25,
+      "appearance_threshold_transition": null,
+      "appearance_scale": [
+        0.3,
+        0.7
+      ],
+      "spatial_threshold": 0.5,
+      "accept_score": 0.5,
+      "ambiguity_margin": 0.1,
+      "require_decisive_cue": true,
+      "min_tracklet_frames": 10
+    },
+    "max_ground_dist": 150.0
+  }
+}
