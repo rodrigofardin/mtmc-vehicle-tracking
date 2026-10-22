@@ -1,0 +1,71 @@
+# S01 do CityFlowV2 (AIC22 Track 1) com GT, calibração e Re-ID.
+# Caminhos relativos a esta pasta: ../../AICity22_Track1_MTMC_Tracking  =  D:\AICity22_Track1_MTMC_Tracking
+# (no Docker o dataset é montado em /AICity22_Track1_MTMC_Tracking; ver docker-compose.yml)
+cameras:
+  - {id: c001, video: "../../AICity22_Track1_MTMC_Tracking/train/S01/c001/vdo.avi"}
+  - {id: c002, video: "../../AICity22_Track1_MTMC_Tracking/train/S01/c002/vdo.avi"}
+  - {id: c003, video: "../../AICity22_Track1_MTMC_Tracking/train/S01/c003/vdo.avi"}
+  - {id: c004, video: "../../AICity22_Track1_MTMC_Tracking/train/S01/c004/vdo.avi"}
+  - {id: c005, video: "../../AICity22_Track1_MTMC_Tracking/train/S01/c005/vdo.avi"}
+
+metadata:
+  timestamp_file: "../../AICity22_Track1_MTMC_Tracking/cam_timestamp/S01.txt"
+  framenum_file: "../../AICity22_Track1_MTMC_Tracking/cam_framenum/S01.txt"
+  location_image: "../../AICity22_Track1_MTMC_Tracking/cam_loc/S01.png"
+
+timestamp:
+  semantics: start_offset
+  confirmed: true   # ReadMe.txt do dataset, item 13: "(starting) timestamps of videos in seconds"; frames podem ser pulados/travados
+framenum: {convention: count}
+
+detector:
+  model: "../models/yolov8n.pt"
+  device: cuda:0
+  imgsz: 960
+  conf: 0.25
+  classes: [car, motorcycle, bus, truck]
+tracker: {track_high_thresh: 0.5, track_low_thresh: 0.1, new_track_thresh: 0.6, track_buffer: 30, match_thresh: 0.8}
+processing: {start_frame: 0, end_frame: null, stride: 1, reuse_detections: true}
+tracklets: {min_length: 5, crops_per_tracklet: 8}
+
+reid:
+  enabled: true
+  model: "../models/osnet_ain_x1_0_vehicle_reid.onnx"   # Open Model Zoo vehicle-reid-0001 (OSNet-AIN, 512-d)
+  backend: onnx
+  input_size: [208, 208]   # documentado no Open Model Zoo; o ONNX tem entrada dinâmica
+  device: cuda:0
+  preprocess: {color: rgb, scale: 255.0, mean: [0.485, 0.456, 0.406], std: [0.229, 0.224, 0.225]}  # confirmar com `reid-check`
+
+spatial:
+  # homografia do dataset: pixel -> metros locais (leste, norte). Erro de reprojeção 5–11 px (ver mtmc/calibration.py)
+  calibration:
+    pattern: "../../AICity22_Track1_MTMC_Tracking/train/S01/{cam}/calibration.txt"
+    ref_latlon: [42.525678, -90.723601]   # ReadMe.txt: centro GPS do S01
+  max_ground_dist: 80.0
+
+association:
+  min_overlap_s: 0.5
+  max_gap_s: 30.0
+  # cosseno do OSNet-AIN: positivos ~0.42, negativos ~0.10 (p90 = 0.24) no `reid-check`; limiares abaixo são ponto de partida
+  appearance_threshold: 0.15
+  appearance_scale: [0.2, 0.6]
+  accept_score: 0.5
+  ambiguity_margin: 0.1
+  min_tracklet_frames: 10
+
+evaluation:
+  gt_dir: "../../AICity22_Track1_MTMC_Tracking/train/S01"
+  iou_threshold: 0.5
+  roi_pattern: "../../AICity22_Track1_MTMC_Tracking/train/S01/{cam}/roi.jpg"
+  drop_single_camera: true   # protocolo AIC22: GT só anota veículos vistos em >= 2 câmeras
+
+tuning:
+  grid:
+    association.appearance_threshold: [0.10, 0.15, 0.20]
+    association.accept_score: [0.5]
+    spatial.max_ground_dist: [80.0, 150.0, 1000.0]
+
+output: {dir: "../outputs/s01_cityflow"}
+
+server:
+  live_association: {enabled: true, interval_s: 2.0, retention_s: 60.0, max_crops: 6}

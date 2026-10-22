@@ -1,0 +1,16 @@
+# imagem única (serviço, CLI, testes, benchmark)
+scipy
+opencv-python-headless
+PyYAML
+lapx
+pytest
+ultralytics
+tensorrt-cu12>=10.9,<11
+onnx
+onnxslim
+rfdetr
+transformers
+fastapi
+uvicorn[standard]
+httpx
+onnxruntime-gpu==1.22.0

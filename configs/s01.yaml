@@ -1,0 +1,57 @@
+# Configuração do cenário S01 (5 câmeras). Para adicionar/remover câmeras basta editar `cameras`.
+# Caminhos relativos são resolvidos a partir da pasta deste arquivo.
+cameras:
+  - {id: c001, video: "../videos S01/vdo_c001.avi"}
+  - {id: c002, video: "../videos S01/vdo_c002.avi"}
+  - {id: c003, video: "../videos S01/vdo_c003.avi"}
+  - {id: c004, video: "../videos S01/vdo_c004.avi"}
+  - {id: c005, video: "../videos S01/vdo_c005.avi"}
+
+metadata:
+  timestamp_file: "../cam_timestamp/S01.txt"
+  framenum_file: "../cam_framenum/S01.txt"
+  location_image: "../cam_loc/S01.png"
+
+timestamp:
+  semantics: start_offset   # start_offset | none
+  confirmed: false          # true só se a semântica for confirmada por documentação
+framenum:
+  convention: count         # count (total de frames) | last_index
+
+detector:
+  model: "../models/yolov8n.pt"
+  device: cpu               # cpu | cuda:0 (exige torch com CUDA; o ambiente atual é torch CPU)
+  imgsz: 640
+  conf: 0.25
+  classes: [car, motorcycle, bus, truck]   # nomes lidos do modelo, ou índices inteiros
+
+tracker:                    # ByteTrack (uma instância independente por câmera)
+  track_high_thresh: 0.5
+  track_low_thresh: 0.1
+  new_track_thresh: 0.6
+  track_buffer: 30
+  match_thresh: 0.8
+
+processing:
+  start_frame: 0
+  end_frame: null           # null = até o fim
+  stride: 1
+  reuse_detections: true
+
+reid:
+  enabled: false            # nenhum modelo de Re-ID disponível no projeto; ver README
+  model: null
+
+# Informações espaciais: nada aqui foi inventado. Veja README (cam_loc não contém calibração).
+spatial:
+  zones: {}
+  transitions: []
+  homographies: {}
+  layout: {}
+
+association:
+  min_overlap_s: 0.5
+  max_gap_s: 30.0
+
+output:
+  dir: "../outputs/s01"

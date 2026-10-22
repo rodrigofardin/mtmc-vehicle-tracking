@@ -1,0 +1,55 @@
+# S02 do CityFlowV2 (validation): cenário NÃO usado para ajustar limiares (ajuste feito no S01).
+cameras:
+  - {id: c006, video: "../../AICity22_Track1_MTMC_Tracking/validation/S02/c006/vdo.avi"}
+  - {id: c007, video: "../../AICity22_Track1_MTMC_Tracking/validation/S02/c007/vdo.avi"}
+  - {id: c008, video: "../../AICity22_Track1_MTMC_Tracking/validation/S02/c008/vdo.avi"}
+  - {id: c009, video: "../../AICity22_Track1_MTMC_Tracking/validation/S02/c009/vdo.avi"}
+
+metadata:
+  timestamp_file: "../../AICity22_Track1_MTMC_Tracking/cam_timestamp/S02.txt"
+  framenum_file: "../../AICity22_Track1_MTMC_Tracking/cam_framenum/S02.txt"
+  location_image: "../../AICity22_Track1_MTMC_Tracking/cam_loc/S02.png"
+
+timestamp: {semantics: start_offset, confirmed: true}
+framenum: {convention: count}
+
+detector:
+  model: "../models/yolov8n.pt"
+  device: cuda:0
+  imgsz: 960
+  conf: 0.25
+  classes: [car, motorcycle, bus, truck]
+tracker: {track_high_thresh: 0.5, track_low_thresh: 0.1, new_track_thresh: 0.6, track_buffer: 30, match_thresh: 0.8}
+processing: {start_frame: 0, end_frame: null, stride: 1, reuse_detections: true}
+tracklets: {min_length: 5, crops_per_tracklet: 8}
+
+reid:
+  enabled: true
+  model: "../models/osnet_ain_x1_0_vehicle_reid.onnx"
+  backend: onnx
+  input_size: [208, 208]
+  device: cuda:0
+  preprocess: {color: rgb, scale: 255.0, mean: [0.485, 0.456, 0.406], std: [0.229, 0.224, 0.225]}
+
+spatial:
+  calibration:
+    pattern: "../../AICity22_Track1_MTMC_Tracking/validation/S02/{cam}/calibration.txt"
+    ref_latlon: [42.491916, -90.723723]   # ReadMe.txt: centro GPS do S02
+  max_ground_dist: 80.0
+
+association:
+  min_overlap_s: 0.5
+  max_gap_s: 30.0
+  appearance_threshold: 0.15
+  appearance_scale: [0.2, 0.6]
+  accept_score: 0.5
+  ambiguity_margin: 0.1
+  min_tracklet_frames: 10
+
+evaluation:
+  gt_dir: "../../AICity22_Track1_MTMC_Tracking/validation/S02"
+  iou_threshold: 0.5
+  roi_pattern: "../../AICity22_Track1_MTMC_Tracking/validation/S02/{cam}/roi.jpg"
+  drop_single_camera: true
+
+output: {dir: "../outputs/s02_cityflow"}

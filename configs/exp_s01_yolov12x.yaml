@@ -1,0 +1,13 @@
+# Experimento: detector yolov12x no S01 (mesmos Re-ID/limiares/tracker; só o detector muda)
+extends: s01_cityflow.yaml
+detector:
+  type: ultralytics
+  trt: true
+  model: "../models/yolo12x.pt"
+  imgsz: [544, 960]
+  device: cuda:0
+  conf: 0.25
+  classes: [car, motorcycle, bus, truck]
+processing: {reuse_detections: true}
+server: {live_association: {enabled: false}}
+output: {dir: "../outputs/exp/s01_yolov12x"}

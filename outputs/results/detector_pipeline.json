@@ -1,0 +1,340 @@
+{
+ "s01|yolov8n": {
+  "global": {
+   "IDF1": 0.6133726888861558,
+   "IDP": 0.5807929196211377,
+   "IDR": 0.6498248255494108,
+   "IDTP": 22443,
+   "IDFP": 16199,
+   "IDFN": 12094,
+   "pred_ids_kept": 120,
+   "gt_detections": 34537,
+   "pred_detections_kept": 38642
+  },
+  "association": {
+   "pair_precision": 0.9299363057324841,
+   "pair_recall": 0.47249190938511326,
+   "true_associations": 146,
+   "false_associations": 11,
+   "missed_associations": 163,
+   "tracklets_with_gt": 273,
+   "tracklets_total": 510
+  },
+  "local_tracking": {
+   "IDF1": 0.6574853113983549,
+   "ID_switches": 49
+  }
+ },
+ "s01|yolov8l": {
+  "global": {
+   "IDF1": 0.5914393052903861,
+   "IDP": 0.514663008060367,
+   "IDR": 0.6951385470654661,
+   "IDTP": 24008,
+   "IDFP": 22640,
+   "IDFN": 10529,
+   "pred_ids_kept": 114,
+   "gt_detections": 34537,
+   "pred_detections_kept": 46648
+  },
+  "association": {
+   "pair_precision": 0.8709677419354839,
+   "pair_recall": 0.4602272727272727,
+   "true_associations": 81,
+   "false_associations": 12,
+   "missed_associations": 95,
+   "tracklets_with_gt": 193,
+   "tracklets_total": 551
+  },
+  "local_tracking": {
+   "IDF1": 0.5730498016747466,
+   "ID_switches": 17
+  }
+ },
+ "s01|yolov9e": {
+  "global": {
+   "IDF1": 0.5466986439945897,
+   "IDP": 0.45000187118745555,
+   "IDR": 0.6963256797058227,
+   "IDTP": 24049,
+   "IDFP": 29393,
+   "IDFN": 10488,
+   "pred_ids_kept": 127,
+   "gt_detections": 34537,
+   "pred_detections_kept": 53442
+  },
+  "association": {
+   "pair_precision": 0.927710843373494,
+   "pair_recall": 0.5202702702702703,
+   "true_associations": 77,
+   "false_associations": 6,
+   "missed_associations": 71,
+   "tracklets_with_gt": 184,
+   "tracklets_total": 576
+  },
+  "local_tracking": {
+   "IDF1": 0.5681930263566458,
+   "ID_switches": 13
+  }
+ },
+ "s01|yolov12x": {
+  "global": {
+   "IDF1": 0.5840641955703132,
+   "IDP": 0.4996295076568418,
+   "IDR": 0.7028404320004633,
+   "IDTP": 24274,
+   "IDFP": 24310,
+   "IDFN": 10263,
+   "pred_ids_kept": 116,
+   "gt_detections": 34537,
+   "pred_detections_kept": 48584
+  },
+  "association": {
+   "pair_precision": 0.9101123595505618,
+   "pair_recall": 0.5,
+   "true_associations": 81,
+   "false_associations": 8,
+   "missed_associations": 81,
+   "tracklets_with_gt": 192,
+   "tracklets_total": 518
+  },
+  "local_tracking": {
+   "IDF1": 0.6067389370582887,
+   "ID_switches": 9
+  }
+ },
+ "s01|rfdetr-large": {
+  "global": {
+   "IDF1": 0.5558448082939417,
+   "IDP": 0.4588745404844943,
+   "IDR": 0.704780380461534,
+   "IDTP": 24341,
+   "IDFP": 28704,
+   "IDFN": 10196,
+   "pred_ids_kept": 123,
+   "gt_detections": 34537,
+   "pred_detections_kept": 53045
+  },
+  "association": {
+   "pair_precision": 0.9487179487179487,
+   "pair_recall": 0.4805194805194805,
+   "true_associations": 74,
+   "false_associations": 4,
+   "missed_associations": 80,
+   "tracklets_with_gt": 184,
+   "tracklets_total": 537
+  },
+  "local_tracking": {
+   "IDF1": 0.5651232186515204,
+   "ID_switches": 22
+  }
+ },
+ "s01|dfine-xlarge": {
+  "global": {
+   "IDF1": 0.391753471281312,
+   "IDP": 0.3130803880803881,
+   "IDR": 0.5232359498508845,
+   "IDTP": 18071,
+   "IDFP": 39649,
+   "IDFN": 16466,
+   "pred_ids_kept": 159,
+   "gt_detections": 34537,
+   "pred_detections_kept": 57720
+  },
+  "association": {
+   "pair_precision": 0.8636363636363636,
+   "pair_recall": 0.1792452830188679,
+   "true_associations": 57,
+   "false_associations": 9,
+   "missed_associations": 261,
+   "tracklets_with_gt": 254,
+   "tracklets_total": 779
+  },
+  "local_tracking": {
+   "IDF1": 0.38940419962442385,
+   "ID_switches": 1262
+  }
+ },
+ "s01|dfine-xlarge-c04": {
+  "global": {
+   "IDF1": 0.423779347246942,
+   "IDP": 0.34823191861981595,
+   "IDR": 0.5411877117294496,
+   "IDTP": 18691,
+   "IDFP": 34983,
+   "IDFN": 15846,
+   "pred_ids_kept": 166,
+   "gt_detections": 34537,
+   "pred_detections_kept": 53674
+  },
+  "association": {
+   "pair_precision": 0.7738095238095238,
+   "pair_recall": 0.14606741573033707,
+   "true_associations": 65,
+   "false_associations": 19,
+   "missed_associations": 380,
+   "tracklets_with_gt": 289,
+   "tracklets_total": 830
+  },
+  "local_tracking": {
+   "IDF1": 0.4344352574344973,
+   "ID_switches": 889
+  }
+ },
+ "s01|dfine-xlarge-c05": {
+  "global": {
+   "IDF1": 0.4626772019521264,
+   "IDP": 0.38640995283659724,
+   "IDR": 0.576454237484437,
+   "IDTP": 19909,
+   "IDFP": 31614,
+   "IDFN": 14628,
+   "pred_ids_kept": 156,
+   "gt_detections": 34537,
+   "pred_detections_kept": 51523
+  },
+  "association": {
+   "pair_precision": 0.826530612244898,
+   "pair_recall": 0.13752122241086587,
+   "true_associations": 81,
+   "false_associations": 17,
+   "missed_associations": 508,
+   "tracklets_with_gt": 330,
+   "tracklets_total": 887
+  },
+  "local_tracking": {
+   "IDF1": 0.4670668517043448,
+   "ID_switches": 618
+  }
+ },
+ "s02|yolov8n": {
+  "global": {
+   "IDF1": 0.3830093304829074,
+   "IDP": 0.32943804777453173,
+   "IDR": 0.4573869058980721,
+   "IDTP": 9585,
+   "IDFP": 19510,
+   "IDFN": 11371,
+   "pred_ids_kept": 128,
+   "gt_detections": 20956,
+   "pred_detections_kept": 29095
+  },
+  "association": {
+   "pair_precision": 0.8333333333333334,
+   "pair_recall": 0.45454545454545453,
+   "true_associations": 20,
+   "false_associations": 4,
+   "missed_associations": 24,
+   "tracklets_with_gt": 113,
+   "tracklets_total": 572
+  },
+  "local_tracking": {
+   "IDF1": 0.37125247188902843,
+   "ID_switches": 36
+  }
+ },
+ "s02|yolov8l": {
+  "global": {
+   "IDF1": 0.3303419924779148,
+   "IDP": 0.26076389847827885,
+   "IDR": 0.4505630845581218,
+   "IDTP": 9442,
+   "IDFP": 26767,
+   "IDFN": 11514,
+   "pred_ids_kept": 136,
+   "gt_detections": 20956,
+   "pred_detections_kept": 36209
+  },
+  "association": {
+   "pair_precision": 0.8666666666666667,
+   "pair_recall": 0.5,
+   "true_associations": 13,
+   "false_associations": 2,
+   "missed_associations": 13,
+   "tracklets_with_gt": 73,
+   "tracklets_total": 629
+  },
+  "local_tracking": {
+   "IDF1": 0.29878639393766737,
+   "ID_switches": 12
+  }
+ },
+ "s02|yolov9e": {
+  "global": {
+   "IDF1": 0.3246707638279192,
+   "IDP": 0.25684836361615826,
+   "IDR": 0.441162435579309,
+   "IDTP": 9245,
+   "IDFP": 26749,
+   "IDFN": 11711,
+   "pred_ids_kept": 139,
+   "gt_detections": 20956,
+   "pred_detections_kept": 35994
+  },
+  "association": {
+   "pair_precision": 0.8571428571428571,
+   "pair_recall": 0.7058823529411765,
+   "true_associations": 12,
+   "false_associations": 2,
+   "missed_associations": 5,
+   "tracklets_with_gt": 71,
+   "tracklets_total": 615
+  },
+  "local_tracking": {
+   "IDF1": 0.31146952547321066,
+   "ID_switches": 6
+  }
+ },
+ "s02|yolov12x": {
+  "global": {
+   "IDF1": 0.35618067947237675,
+   "IDP": 0.2811688670386124,
+   "IDR": 0.4857797289559076,
+   "IDTP": 10180,
+   "IDFP": 26026,
+   "IDFN": 10776,
+   "pred_ids_kept": 130,
+   "gt_detections": 20956,
+   "pred_detections_kept": 36206
+  },
+  "association": {
+   "pair_precision": 0.9375,
+   "pair_recall": 0.7142857142857143,
+   "true_associations": 15,
+   "false_associations": 1,
+   "missed_associations": 6,
+   "tracklets_with_gt": 72,
+   "tracklets_total": 614
+  },
+  "local_tracking": {
+   "IDF1": 0.3220244371394902,
+   "ID_switches": 9
+  }
+ },
+ "s02|rfdetr-large": {
+  "global": {
+   "IDF1": 0.3182980154725866,
+   "IDP": 0.24576667359235405,
+   "IDR": 0.45156518419545716,
+   "IDTP": 9463,
+   "IDFP": 29041,
+   "IDFN": 11493,
+   "pred_ids_kept": 134,
+   "gt_detections": 20956,
+   "pred_detections_kept": 38504
+  },
+  "association": {
+   "pair_precision": 0.8461538461538461,
+   "pair_recall": 0.8461538461538461,
+   "true_associations": 11,
+   "false_associations": 2,
+   "missed_associations": 2,
+   "tracklets_with_gt": 83,
+   "tracklets_total": 594
+  },
+  "local_tracking": {
+   "IDF1": 0.29491613252075566,
+   "ID_switches": 6
+  }
+ }
+}

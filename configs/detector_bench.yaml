@@ -1,0 +1,21 @@
+# Benchmark de detectores (executado na imagem `bench`; caminhos dentro do contêiner)
+dataset_root: /AICity22_Track1_MTMC_Tracking
+models_dir: models
+out_dir: outputs/detector_bench
+stride: 10                 # 1 frame do GT a cada 10
+scenes: [S01, S02]
+
+models:
+  # --- Ultralytics-compatíveis (PT FP16 e TensorRT FP16), entrada 544x960 (16:9, múltiplos de 32) ---
+  - {name: yolov8n,  kind: ultralytics, weights: yolov8n.pt,  imgsz: [544, 960], backends: [pt, trt]}   # linha de base atual
+  - {name: yolov8l,  kind: ultralytics, weights: yolov8l.pt,  imgsz: [544, 960], backends: [trt]}       # referência (Ultralytics)
+  - {name: yolov9e,  kind: ultralytics, weights: yolov9e.pt,  imgsz: [544, 960], backends: [trt]}       # WongKinYiu, COCO AP 55.6
+  - {name: yolov10l, kind: ultralytics, weights: yolov10l.pt, imgsz: [544, 960], backends: [trt]}       # THU-MIG, NMS-free
+  - {name: yolov10x, kind: ultralytics, weights: yolov10x.pt, imgsz: [544, 960], backends: [trt]}
+  - {name: yolov12l, kind: ultralytics, weights: yolov12l.pt, imgsz: [544, 960], backends: [trt]}       # Buffalo/UCAS (pesos originais)
+  - {name: yolov12x, kind: ultralytics, weights: yolo12x.pt,  imgsz: [544, 960], backends: [trt]}
+  # --- DETRs (ONNX -> TensorRT FP16) ---
+  - {name: rfdetr-medium, kind: rfdetr, size: medium, backends: [trt]}
+  - {name: rfdetr-large,  kind: rfdetr, size: large,  backends: [trt]}
+  - {name: dfine-large,   kind: dfine, hf: ustc-community/dfine-large-coco,  size: [640, 640], backends: [trt]}
+  - {name: dfine-xlarge,  kind: dfine, hf: ustc-community/dfine-xlarge-coco, size: [640, 640], backends: [trt]}

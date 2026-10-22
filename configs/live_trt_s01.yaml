@@ -1,0 +1,11 @@
+# Serviço ao vivo (S01 CityFlowV2): detector TensorRT FP16 + ByteTrack por câmera + Re-ID + associação ao vivo.
+# docker compose: MTMC_CONFIG=configs/live_trt_s01.yaml docker compose up -d mtmc-api
+extends: s01_cityflow.yaml
+detector:
+  type: ultralytics
+  trt: true
+  model: "../models/yolov8l.pt"
+  imgsz: [544, 960]
+  device: cuda:0
+  conf: 0.25
+  classes: [car, motorcycle, bus, truck]

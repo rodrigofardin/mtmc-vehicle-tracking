@@ -1,0 +1,29 @@
+# ambientes / dependências
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+frontend/dist/
+frontend/test-results/
+frontend/playwright-report/
+.env
+.claude/
+
+# dados e artefatos pesados (não redistribuíveis / geráveis)
+videos S01/
+cam_framenum/
+cam_loc/
+cam_timestamp/
+outputs/*
+!outputs/results/
+models/*
+!models/README.md
+*.avi
+*.mp4
+*.onnx
+*.engine
+*.pt
+*.pth
+*.log
+outputs_detect.log

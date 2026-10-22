@@ -1,0 +1,8 @@
+.venv
+outputs
+videos S01
+cam_*
+models
+**/__pycache__
+.pytest_cache
+*.log

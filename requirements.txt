@@ -1,0 +1,9 @@
+numpy
+scipy
+opencv-python
+PyYAML
+ultralytics==8.2.77
+torch
+lapx
+pytest
+# opcional (Re-ID via ONNX): onnxruntime

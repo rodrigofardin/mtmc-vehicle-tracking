@@ -1,0 +1,14 @@
+# Experimento: detector rfdetr-large no S01 (mesmos Re-ID/limiares/tracker; só o detector muda)
+extends: s01_cityflow.yaml
+detector:
+  type: rfdetr
+  name: rfdetr-large
+  size: large
+  shape: [704, 704]
+  models_dir: models
+  device: cuda:0
+  conf: 0.25
+  classes: [car, motorcycle, bus, truck]
+processing: {reuse_detections: true}
+server: {live_association: {enabled: false}}
+output: {dir: "../outputs/exp/s01_rfdetr-large"}

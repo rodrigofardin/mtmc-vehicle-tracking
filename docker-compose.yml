@@ -1,0 +1,81 @@
+# Pipeline em lote (CLI):   docker compose run --rm mtmc <comando> -c configs/s01_gpu.yaml
+# Testes do backend:        docker compose run --rm tests
+# Stack de monitoramento:   docker compose up -d --build   (sobe mtmc-api + frontend)
+#   frontend: http://localhost:8080      API: http://localhost:8000/api/health
+# O projeto inteiro é montado em /workspace (dataset, models/, outputs/ ficam no host).
+services:
+  mtmc:
+    build: .
+    image: mtmc:gpu
+    profiles: ["cli"]          # não sobe no `up`; `docker compose run mtmc ...` continua funcionando
+    volumes:
+      - .:/workspace
+      - ${AICITY_DIR:-D:/AICity22_Track1_MTMC_Tracking}:/AICity22_Track1_MTMC_Tracking:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  tests:
+    image: mtmc:gpu
+    profiles: ["cli"]
+    entrypoint: ["python", "-m", "pytest"]
+    command: ["tests", "-q"]
+    volumes:
+      - .:/workspace
+      - ${AICITY_DIR:-D:/AICity22_Track1_MTMC_Tracking}:/AICity22_Track1_MTMC_Tracking:ro
+
+  # Benchmark de detectores (TensorRT, RF-DETR, D-FINE, YOLOv9/10/12): mesma imagem, outro entrypoint
+  bench:
+    image: mtmc:gpu
+    profiles: ["cli"]
+    entrypoint: ["python"]
+    volumes:
+      - .:/workspace
+      - ${AICITY_DIR:-D:/AICity22_Track1_MTMC_Tracking}:/AICity22_Track1_MTMC_Tracking:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  # Backend de streaming: YOLO + ByteTrack (GPU) -> WebSocket/REST. Não contém código de interface.
+  mtmc-api:
+    build: .
+    image: mtmc:gpu
+    command: ["serve", "-c", "${MTMC_CONFIG:-configs/s01_cityflow.yaml}", "--serve-mode", "${MTMC_MODE:-live}"]
+    ports:
+      - "127.0.0.1:${API_PORT:-8000}:8000"   # acesso direto opcional; o frontend usa a rede interna
+    volumes:
+      - .:/workspace
+      - ${AICITY_DIR:-D:/AICity22_Track1_MTMC_Tracking}:/AICity22_Track1_MTMC_Tracking:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://127.0.0.1:8000/api/health', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      start_period: 40s
+      retries: 3
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  # Frontend independente (nginx + build estático). Sem dependência de inicialização do backend.
+  frontend:
+    build: ./frontend
+    image: mtmc-frontend:latest
+    ports:
+      - "${FRONTEND_PORT:-8080}:8080"
+    environment:
+      BACKEND_URL: http://mtmc-api:8000
+      APP_ENVIRONMENT: ${APP_ENVIRONMENT:-local}
+    restart: unless-stopped
